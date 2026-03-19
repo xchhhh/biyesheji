@@ -1,0 +1,557 @@
+范文
+
+
+
+本 科 生 毕 业 论 文(设计)
+
+基于SpringBoot的农产品销售系统
+
+
+学         院：      应用技术学院       
+专         业：    计算机科学与技术     
+姓         名：        赵诺           
+学         号：    24220055290233       
+指导教师/职称：        苏明超           
+提  交  日  期：                        
+
+
+教 务 处 制
+
+云南民族大学本科毕业论文（设计）原创性声明
+本人郑重声明：所呈交的毕业论文(设计)，是本人在指导教师的指导下进行研究工作所取得的成果。除论文中已经注明引用的内容外，本论文没有抄袭、剽窃他人已经发表的研究成果。本声明的法律结果由本人承担。
+
+
+                     论文(设计)作者签名：
+
+日  期：    年    月    日
+
+
+…………………………………………………………………………………………………………
+
+云南民族大学毕业论文(设计)使用授权的说明
+本人完全了解云南民族大学有关保留、使用毕业论文(设计)的规定，即：学校有权保留、送交论文的复印件，允许论文被查阅，学校可以公布论文(设计)的全部或部分内容，可以采用影印或其他复制手段保存论文(设计)。
+（保密论文在解密后应遵守）
+
+
+指导教师签名：           论文(设计)作者签名：
+
+                           日  期：     年    月    日 
+摘  要
+随着互联网技术的快速发展和电子商务的蓬勃兴起，传统农产品销售模式正面临深刻变革。本文设计并实现了一个基于SpringBoot框架的农产品销售系统，采用前后端分离的B/S架构，后端使用SpringBoot 3.4 + MyBatis-Plus + Spring Security + MySQL技术栈，前端使用Vue.js + Element UI框架。系统实现了用户管理、商品管理、订单管理、购物车、物流管理、评价管理、收藏管理、库存管理、内容管理和数据统计等核心功能模块，支持管理员、商家和普通用户三种角色。通过JWT实现无状态身份认证，采用Redis缓存提升系统性能，集成阿里云OSS实现文件云存储。系统具有良好的用户体验、较高的安全性和可扩展性，能够有效满足农产品线上销售的业务需求。
+关键词：SpringBoot；农产品销售；电子商务；Vue.js；前后端分离
+
+
+
+Abstract
+With the rapid development of Internet technology and the booming of e-commerce, the traditional agricultural product sales model is facing profound changes. This paper designs and implements an agricultural product sales system based on the SpringBoot framework, adopting a B/S architecture with front-end and back-end separation. The back-end uses SpringBoot 3.4 + MyBatis-Plus + Spring Security + MySQL technology stack, and the front-end uses Vue.js + Element UI framework. The system implements core functional modules including user management, product management, order management, shopping cart, logistics management, review management, favorites management, inventory management, content management, and data statistics, supporting three roles: administrator, merchant, and regular user. Stateless identity authentication is implemented through JWT, Redis cache is used to improve system performance, and Alibaba Cloud OSS is integrated for cloud file storage. The system has good user experience, high security, and scalability, which can effectively meet the business needs of online sales of agricultural products.
+Keywords: SpringBoot; Agricultural Product Sales; E-commerce; Vue.js; Front-end and Back-end Separation
+
+
+
+目 录
+1 绪论	1
+1.1 研究背景	1
+1.1.1 农产品电子商务发展背景	1
+1.1.2 国家政策与支持	2
+1.1.3 技术发展背景	2
+1.2 研究目的	2
+2 开发技术框架介绍	3
+2.1 SpringBoot框架技术	3
+2.2 Spring Security安全框架	3
+2.3 MyBatis-Plus持久层框架	4
+2.4 Vue.js前端框架	4
+2.5 MySQL数据库	4
+3 系统需求分析	4
+3.1 可行性分析	4
+3.1.1 技术可行性	4
+3.1.2 经济可行性	5
+3.1.3 操作可行性	5
+3.2 系统功能需求分析	5
+3.3 关键业务流程分析	7
+4 系统设计	9
+4.1 设计概述	9
+4.1.1 设计目标	9
+4.1.2 系统模块划分	9
+4.2 系统架构设计	9
+4.2.1 总体架构	9
+4.2.2 前端架构	10
+4.2.3 后端架构	10
+4.3 数据库设计	10
+4.3.1 概念结构设计	10
+4.3.2 逻辑结构设计	11
+5 系统实现与测试	21
+5.1 用户注册与登录功能实现	21
+5.1.1 用户登录实现	21
+5.1.2 用户注册实现	22
+5.2 商品管理功能实现	23
+5.2.1 演唱会与票务模块用例图	24
+5.2.2 演唱会列表展示	25
+5.2.3 演唱会详情页	25
+5.3 购物车与下单功能实现	26
+5.3.1 购票流程活动图	27
+5.3.2 订单生成与超时处理序列图	29
+5.3.3 订单生成	29
+5.3.4 订单超时处理	29
+5.3.5 订单倒计时显示	30
+5.4 订单管理与物流跟踪功能实现	30
+5.4.1 支付宝支付流程序列图	31
+5.4.2 支付宝支付集成	32
+5.4.3 支付回调处理	32
+5.5 商品评价功能实现	33
+5.5.1 WebSocket实时通信序列图	33
+5.5.2 WebSocket配置	34
+5.5.3 前端聊天界面	34
+5.6 库存管理功能实现	35
+5.6.1 数据统计模块组件图	35
+5.6.2 销售数据统计	36
+5.7 内容管理功能实现	37
+5.8 数据统计功能实现	37
+5.9 系统测试	38
+6 总结	38
+参考文献	39
+附录	40
+致谢	41
+
+
+1绪论
+1.1研究背景
+1.1.1农产品电子商务发展背景
+随着互联网技术的飞速发展和电子商务的蓬勃兴起，传统农产品销售模式正面临着深刻变革。我国作为农业大国，农产品种类丰富、产量巨大，2023年我国农林牧渔业总产值达到15.4万亿元，农产品市场规模持续扩大。然而，长期以来农产品流通环节存在诸多问题，严重制约了农业现代化的发展进程。
+传统农产品销售模式主要依赖于农贸市场、批发市场等线下渠道，存在以下突出问题：
+第一，信息不对称问题严重。农户难以及时获取市场需求信息，不了解消费者的真实需求和偏好，导致生产与市场脱节。同时，消费者也难以了解农产品的产地、生产过程、质量等真实情况，购买决策缺乏充分的信息支撑。这种信息不对称不仅影响了市场效率，也增加了交易成本；
+第二，流通环节过多。农产品从产地到消费者手中，通常需要经过收购商、批发商、零售商等多个中间环节，每个环节都会产生一定的加价，导致农产品终端价格偏高，而农户获得的收益却相对较低。据统计，农产品流通成本占终端价格的比例高达50%以上，远高于发达国家的水平。
+第三，销售范围受限。传统销售模式受地域限制明显，优质农产品难以销往更广阔的市场。许多偏远地区的特色农产品由于缺乏有效的销售渠道，只能在本地低价销售，甚至出现滞销的情况，造成了资源浪费和农户损失。
+第四，质量追溯困难。缺乏有效的信息化手段，农产品从生产、加工到销售的全过程难以实现有效追溯。一旦出现食品安全问题，难以快速定位问题源头，不利于保障消费者权益和维护市场秩序。
+1.1.2国家政策与支持
+近年来，国家高度重视农产品电子商务的发展，出台了一系列支持政策。2023年中央一号文件明确提出要深入实施"数商兴农"工程，推进电子商务进乡村，促进农副产品直播带货规范健康发展。《"十四五"电子商务发展规划》也将农村电商作为重点发展领域，提出要完善农村电商公共服务体系，培育农村电商市场主体，推动农产品上行。
+在政策的大力支持下，农产品电子商务迎来了快速发展期。据商务部数据显示，2023年全国农村网络零售额达到2.49万亿元，同比增长12.9%，农产品网络零售额达到5870亿元。电子商务已经成为推动农产品流通现代化、促进农民增收的重要力量。
+1.1.3技术发展背景
+在技术层面，Web开发技术的不断进步为农产品电商系统的开发提供了有力支撑。SpringBoot框架的出现大大简化了Java Web应用的开发过程，通过自动配置和起步依赖，开发者可以快速搭建生产级别的应用。Vue.js等现代前端框架的流行，使得构建交互性强、用户体验好的Web应用变得更加容易。云计算、大数据等新技术的发展，也为农产品电商系统提供了更多可能性。
+在此背景下，构建一个功能完善、技术先进、操作便捷的农产品销售系统，对于促进农产品流通、助力农民增收、保障食品安全具有重要的现实意义。
+1.2研究目的
+本课题旨在设计并实现一个基于SpringBoot框架的农产品销售系统，主要研究目的包括：构建功能完善的农产品电商平台，系统需要实现商品展示、在线购买、订单管理、物流跟踪等电商核心功能，同时针对农产品销售的特点，提供商品分类管理、库存管理、商家入驻等专业化功能，满足农产品线上销售的业务需求；采用先进的技术架构，采用前后端分离的B/S架构，后端使用SpringBoot框架，前端使用Vue.js框架，实现系统的高内聚、低耦合。通过合理的技术选型和架构设计，提高系统的可维护性、可扩展性和性能表现；实现多角色权限管理，系统需要支持管理员、商家、消费者等多种用户角色，不同角色具有不同的功能权限。通过基于角色的访问控制（RBAC）机制，实现细粒度的权限管理，保证系统的安全性；提供良好的用户体验，采用现代化的UI设计和交互方式，提供简洁美观的界面和流畅的操作流程。通过响应式设计，支持不同设备和屏幕尺寸的访问，提升用户体验；保证系统的安全性和稳定性，采用JWT身份认证、密码加密存储、SQL注入防护等安全措施，保护用户数据安全。通过事务管理、异常处理、日志记录等机制，保证系统的稳定运行。
+2开发技术框架介绍
+农产品销售系统的构建涉及前端展示、后端业务处理、数据持久化等多个层次，各层次所采用的技术选型直接决定了系统的性能表现与可维护程度。本章对系统所使用的核心技术框架进行介绍，重点说明各技术在本系统中所承担的职责与其适用性。
+2.1SpringBoot框架技术
+SpringBoot框架是系统后端的核心支撑。SpringBoot以"约定优于配置"为设计理念，将繁琐的XML配置简化为注解与自动装配，使开发者得以专注于业务逻辑本身。在农产品销售系统中，商品管理、订单处理、用户认证等核心业务均通过SpringBoot的Controller-Service-Mapper分层结构组织，代码职责清晰，便于后期功能扩展。内嵌Tomcat的特性也使系统部署流程大为简化，适合快速迭代的农业电商场景。
+2.2Spring Security安全框架
+Spring Security与JWT共同构成系统的安全认证体系。用户完成登录后，服务端生成携带角色信息的JWT令牌并返回给客户端，后续每次请求均在请求头中携带该令牌，服务端通过过滤器完成令牌校验与权限判断。系统设计了SUPER_ADMIN、ADMIN、MERCHANT、USER四种角色，不同角色对应不同的功能权限，有效防止越权操作。用户密码通过BCrypt算法加密存储，从存储层面保障了账户安全。
+2.3MyBatis-Plus持久层框架
+MyBatis-Plus负责系统与数据库之间的数据交互。继承BaseMapper后即可获得通用的增删改查能力，LambdaQueryWrapper使查询条件的构建更为类型安全、表达清晰。在商品按分类筛选、订单按状态过滤、用户多条件搜索等场景中，MyBatis-Plus的条件构造器显著减少了重复的SQL拼接工作，且内置的分页插件天然适配农产品列表的分页展示需求。
+2.4Vue.js前端框架
+Vue.js承担前端页面的构建工作。Vue.js采用组件化开发模式，将商品列表、购物车、订单详情等各功能区域封装为独立组件，配合Vue Router实现单页面应用的路由跳转，结合Vuex统一管理用户登录态、购物车数据等全局状态。Element UI组件库提供了风格统一的表格、表单、弹窗等界面元素，有效降低了前端开发成本，保证了管理端与用户端界面的一致性和专业感。
+2.5MySQL数据库
+MySQL 8.0作为系统的关系型数据库，承载所有业务数据的持久化存储。系统数据库包含用户、商品、订单、购物车、评价、物流等核心业务表，表间通过外键关联维护数据完整性，关键查询字段均建立了索引，保证在数据量增长时仍能维持良好的查询响应速度。
+3系统需求分析
+3.1可行性分析
+3.1.1技术可行性
+系统所采用的SpringBoot、Vue.js、MySQL、MyBatis-Plus等技术均属于当前Java Web领域成熟度较高的主流技术栈，拥有完善的官方文档、活跃的开发者社区以及大量可供参考的实践案例。前后端分离的开发模式在当前农产品电商、垂直零售等行业中已有广泛落地，技术路线经过充分验证。JWT身份认证方案无需依赖服务端Session存储，天然适合当前B/S架构的部署方式。综合来看，本系统所涉及的全部技术组件均可获取、可学习、可实践，技术层面具备充分的可行性。
+3.1.2经济可行性
+系统整体采用开源技术栈，无需购置任何商业软件授权。开发阶段可在本地Windows或Linux环境中完成，测试与演示阶段可借助入门级云服务器完成部署，运营成本极低。与此同时，系统建成后可直接帮助农户和商家减少依赖实体市场摊位的销售成本，通过线上渠道触达更广泛的消费群体，从长远角度看具有较强的经济价值。对于小型农业经营主体而言，这套系统提供了一套低门槛的数字化销售解决方案，投入产出比明显优于采购商业电商系统。
+3.1.3操作可行性
+系统采用B/S架构，用户和商家仅需通过浏览器即可访问全部功能，无需安装任何客户端软件，大幅降低了使用门槛。前台购物端参照主流电商产品的交互习惯进行设计，消费者可以较为顺畅地完成浏览、下单、查看物流等操作。后台管理端的界面布局清晰，商家和管理员可在较短时间内熟悉商品上架、订单处理等核心操作流程。系统还针对不同角色分别提供了权限范围内的操作入口，避免误操作的同时也减少了用户的认知负担。
+3.2系统功能需求分析
+本系统面向消费者、商家（农户）和管理员三类主要用户群体，各类用户的功能需求有所不同，但又通过商品、订单等核心业务对象形成协作关系。
+消费者是平台的主要交易参与方，其核心诉求在于能够方便地找到所需农产品并完成购买。消费者需要能够浏览平台首页展示的轮播推广和商品列表，通过分类导航或关键词搜索快速定位目标商品，查看商品的详细信息、产地、库存与评价，然后将商品加入购物车或直接下单。下单后需要能够跟踪订单状态和物流信息，收货后可以对商品进行评价，同时还需要管理个人的收货地址和账户信息。
+商家作为商品的供应方，其核心需求在于高效地管理自己的商品信息和处理订单。商家需要能够发布和编辑商品信息，包括设置商品名称、分类、产地、价格、折扣和图片，并能够管理商品的上下架状态。收到订单后需要及时处理并填写物流单号，还需要管理库存的入库与出库记录。此外，商家需要查看自己商品收到的评价，了解消费者的反馈意见。
+管理员的核心职责是维护平台正常运转。管理员需要能够管理全体用户账户，对商品进行审核与分类管理，处理全平台的订单与退款申请，管理首页轮播图和平台公告，同时还需要通过数据统计面板掌握平台的整体运营状况。
+以下用例图描述了三类用户与系统核心功能之间的关系：
+
+
+
+
+3.3关键业务流程分析
+系统中最核心的业务流程是商品从发布到消费者完成购买的完整交易链路。商家登录后台后录入商品信息并上架，商品经系统收录后便可在前台展示。消费者浏览到感兴趣的商品后，可选择加入购物车选取多件商品一并结算，也可直接跳过购物车进入下单页面。下单时需要确认收货地址和购买数量，提交订单后系统生成待支付状态的订单记录。支付完成后订单状态更新为已支付，商家在后台收到订单后填写物流公司和单号完成发货操作，订单状态随之变更为已发货。消费者可在前台查看物流跟踪信息，确认收货后订单进入已完成状态，此时消费者可对购买的商品提交评价。若消费者对商品不满意，在订单完成前可发起退款申请，管理员审核后执行退款并将订单状态更新为已退款。
+如图3- 1展示了核心下单-发货流程的关键交互步骤：
+
+图3- 1 核心下单时序图
+除交易流程外，商品评价是另一条重要的业务线。消费者在订单完成后方可对已购商品提交评价，评价内容提交后处于待审核状态，管理员审核通过后评价才会在商品详情页对外展示。这一机制保证了评价内容的真实性和平台内容质量。
+4系统设计
+4.1设计概述
+4.1.1设计目标
+系统设计以满足农产品线上销售的实际业务需求为出发点，兼顾系统的可用性、安全性与可维护性。在功能层面，系统需要覆盖商品展示、交易下单、物流跟踪、库存管理、数据统计等农产品销售全流程；在性能层面，系统需要保证常规操作的响应时间控制在合理范围内，并具备基本的并发处理能力；在安全层面，系统需要通过角色权限控制防止越权操作，并对用户密码等敏感数据进行加密保护；在可维护性层面，系统的代码结构应当清晰，各模块职责明确，便于后期功能迭代和问题排查。
+
+4.1.2系统模块划分
+系统按照业务属性划分为以下功能模块：
+
+图4- 1 农产品销售系统功能模块
+4.2系统架构设计
+4.2.1总体架构
+系统采用前后端分离的B/S架构。浏览器端通过Axios发起HTTP请求，与后端SpringBoot应用通信，后端按照RESTful风格提供接口服务，数据以JSON格式在前后端之间传递。部署时，前端静态资源由Nginx托管并提供反向代理，后端SpringBoot应用运行于内嵌Tomcat容器，数据持久层使用MySQL数据库。这种架构使得前后端可以独立开发、独立部署，前端界面的调整不会影响后端逻辑，后端接口的版本升级也可在不修改前端的情况下逐步推进。
+4.2.2前端架构
+前端基于Vue 2.x构建单页面应用（SPA）。路由层面由Vue Router统一管理页面跳转与路由守卫，未登录用户访问需要认证的页面时会被自动重定向至登录页；状态管理层面由Vuex集中存储用户信息和购物车数据；网络请求层面对Axios进行了统一封装，在请求拦截器中自动附加JWT令牌，在响应拦截器中统一处理错误信息；UI层面引入Element UI组件库，为管理后台提供表格、表单、分页、弹窗等标准化组件。前台用户端与后台管理端共用一套前端工程，通过路由和权限控制区分不同角色可访问的页面范围。
+
+4.2.3后端架构
+后端采用经典的三层架构组织代码。Controller层负责接收前端请求、参数校验与响应封装；Service层承载核心业务逻辑，包括订单状态流转、库存扣减、退款处理等；Mapper层通过MyBatis-Plus与MySQL数据库交互，执行数据的增删改查操作。Spring Security过滤器链在请求到达Controller之前完成身份认证与权限校验，每个接口都只对具备相应权限的角色开放。系统还实现了统一异常处理机制，将业务异常统一转换为格式规范的错误响应返回给前端，避免服务端异常信息直接暴露给用户。
+4.3数据库设计
+4.3.1概念结构设计
+系统的核心实体包括用户（User）、商品（Product）、商品分类（Category）、订单（Order）、购物车（Cart）、收货地址（Address）、商品评价（Review）、物流（Logistics）、资讯（Article）、公告（Notice）以及库存入出库记录（StockIn/StockOut）。各实体之间的主要关系如下：
+1、用户（User）实体属性图
+
+图4- 2 用户（User）实体属性图
+
+2、商品（Product）实体属性图
+
+图4- 3 商品（Product）实体属性图
+
+3、商品分类（Category）实体属性图
+
+图4- 4 商品分类（Category）实体属性图
+
+4、订单（Order）实体属性图
+
+图4- 5 订单（Order）实体属性图
+
+5、购物车（Cart）实体属性图
+
+图4- 6 购物车（Cart）实体属性图
+
+6、收货地址（Address）实体属性图
+
+图4- 7 收货地址（Address）实体属性图
+
+7、商品评价（Review）实体属性图
+
+图4- 8 商品评价（Review）实体属性图
+
+8、资讯（Article）实体属性图
+
+图4- 9 资讯（Article）实体属性图
+
+一个用户可以拥有多个收货地址，可以发布多个商品（商家角色），可以生成多笔订单，可以收藏多个商品，可以提交多条评价。一个商品属于一个分类，由一个商家发布，可以存在于多个购物车中，可以产生多笔订单记录，可以被多个用户评价。一笔订单对应一个用户和一个商品，并可以关联一条物流记录。
+以下E-R图展示了主要实体间的关联关系：
+
+图4- 10 实体关联关系E-R图
+
+4.3.2逻辑结构设计
+根据概念结构设计，系统共设计以下核心数据表：
+表4- 1 用户表（user）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	用户ID
+username	varchar(50)	NOT NULL, UNIQUE	用户名
+password	varchar(100)	NOT NULL	密码（BCrypt加密）
+name	varchar(50)	NOT NULL	真实姓名
+role	enum	NOT NULL, DEFAULT 'USER'	用户角色（SUPER_ADMIN/ADMIN/MERCHANT/USER）
+email	varchar(50)	NOT NULL	电子邮箱
+business_license	varchar(255)	NULL	营业执照（商家专用）
+status	tinyint	NOT NULL, DEFAULT 1	账号状态（0禁用，1启用）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+
+表4- 2 商品表（product）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	商品ID
+name	varchar(100)	NOT NULL	商品名称
+description	longtext	NULL	商品描述（富文本）
+price	decimal(10,2)	NOT NULL	商品原价
+discount_price	decimal(10,2)	NULL	折扣价格
+is_discount	tinyint	NULL	是否开启折扣
+stock	int	NOT NULL, DEFAULT 0	库存数量
+sales_count	int	NOT NULL, DEFAULT 0	累计销量
+category_id	bigint	NOT NULL, FK	商品分类ID
+merchant_id	bigint	NOT NULL, FK	发布商家ID
+place_of_origin	varchar(255)	NULL	产地
+image_url	varchar(255)	NULL	商品图片URL
+status	tinyint	NOT NULL, DEFAULT 1	商品状态（0下架，1上架）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+
+表4- 3 商品分类表（category）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	分类ID
+name	varchar(50)	NOT NULL	分类名称
+description	text	NULL	分类描述
+icon	varchar(255)	NULL	分类图标
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+表4- 4 订单表（order）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	订单ID
+user_id	bigint	NOT NULL, FK	下单用户ID
+product_id	bigint	NOT NULL, FK	商品ID
+quantity	int	NOT NULL	购买数量
+price	decimal(10,2)	NOT NULL	成交单价
+total_price	decimal(10,2)	NOT NULL	订单总价
+status	tinyint	NOT NULL, DEFAULT 0	订单状态（0待支付，1已支付，2已发货，3已完成，4已取消，5退款中，6已退款，7退款失败）
+last_status	tinyint	NOT NULL, DEFAULT 0	上一状态（用于退款回滚）
+refund_status	tinyint	NULL, DEFAULT 0	退款状态（0无，1申请中，2退款中，3已退款，4失败）
+refund_reason	varchar(255)	NULL	退款原因
+refund_time	timestamp	NULL	退款时间
+remark	varchar(255)	NULL	订单备注
+recv_name	varchar(255)	NULL	收货人姓名
+recv_phone	varchar(255)	NULL	收货人电话
+recv_address	text	NULL	收货地址
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+表4- 5 购物车表（cart）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	购物车记录ID
+user_id	bigint	NOT NULL, FK	用户ID
+product_id	bigint	NOT NULL, FK	商品ID
+quantity	int	NOT NULL, DEFAULT 1	商品数量
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+表4- 6 收货地址表（address）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	地址ID
+user_id	bigint	NOT NULL, FK	用户ID
+receiver	varchar(255)	NULL	收货人姓名
+phone	varchar(20)	NOT NULL	联系电话
+address	varchar(255)	NOT NULL	详细地址
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+表4- 7 商品评价表（review）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	评价ID
+user_id	bigint	NOT NULL, FK	评价用户ID
+product_id	bigint	NOT NULL, FK	被评价商品ID
+rating	tinyint	NOT NULL, CHECK(1-5)	评分（1-5星）
+content	text	NULL	评价内容
+status	tinyint	NOT NULL, DEFAULT 0	状态（0待审核，1已通过，2已拒绝）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+
+表4- 8 物流信息表（logistics）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	物流ID
+order_id	bigint	NOT NULL	关联订单ID
+receiver_name	varchar(50)	NOT NULL	收货人姓名
+receiver_phone	varchar(20)	NOT NULL	收货人电话
+receiver_address	varchar(255)	NOT NULL	收货地址
+company_name	varchar(50)	NOT NULL	物流公司名称
+tracking_number	varchar(50)	NOT NULL	物流单号
+status	tinyint	NOT NULL, DEFAULT 0	物流状态（0待发货，1已发货，2已签收，3已取消）
+expected_arrival_time	timestamp	NULL	预计到达时间
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+
+表4- 9 商品收藏表（favorite）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	收藏记录ID
+user_id	bigint	NOT NULL, FK	用户ID
+product_id	bigint	NOT NULL, FK	商品ID
+status	tinyint	NOT NULL, DEFAULT 1	收藏状态（0已取消，1已收藏）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+
+表4- 10 入库记录表（stock_in）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	入库ID
+product_id	bigint	NOT NULL	商品ID
+quantity	int	NOT NULL	入库数量
+unit_price	decimal(10,2)	NOT NULL	采购单价
+total_price	decimal(10,2)	NOT NULL	采购总价
+supplier	varchar(100)	NULL	供应商名称
+stock_date	date	NOT NULL	入库日期
+operator_id	bigint	NOT NULL	操作人ID
+remark	varchar(255)	NULL	备注
+status	tinyint	NOT NULL, DEFAULT 1	记录状态（0作废，1正常）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+
+表4- 11 出库记录表（stock_out）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	出库ID
+product_id	bigint	NOT NULL	商品ID
+quantity	int	NOT NULL	出库数量
+unit_price	decimal(10,2)	NOT NULL	出库单价
+total_price	decimal(10,2)	NOT NULL	出库总价
+type	tinyint	NOT NULL	出库类型（1销售出库，2损耗出库，3其他）
+customer_name	varchar(50)	NULL	客户姓名
+order_no	varchar(50)	NULL	关联订单号
+operator_id	bigint	NOT NULL	操作人ID
+remark	varchar(255)	NULL	备注
+status	tinyint	NOT NULL, DEFAULT 1	记录状态（0作废，1正常）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+表4- 12 农业资讯表（article）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	资讯ID
+title	varchar(200)	NOT NULL	资讯标题
+content	longtext	NOT NULL	资讯内容（富文本）
+summary	varchar(500)	NULL	资讯摘要
+cover_image	varchar(255)	NULL	封面图片URL
+view_count	int	NULL, DEFAULT 0	浏览量
+status	tinyint	NOT NULL, DEFAULT 1	状态（0下架，1上架）
+created_at	timestamp	DEFAULT CURRENT_TIMESTAMP	创建时间
+updated_at	timestamp	ON UPDATE CURRENT_TIMESTAMP	更新时间
+
+表4- 13 平台公告表（notice）
+字段名	数据类型	约束	说明
+id	int	PK, AUTO_INCREMENT	公告ID
+title	varchar(255)	NOT NULL	公告标题
+content	text	NOT NULL	公告内容
+tags	varchar(255)	NULL	公告标签
+time	datetime	NOT NULL, DEFAULT CURRENT_TIMESTAMP	发布时间
+
+
+表4- 14 首页轮播图表（carousel_item）
+字段名	数据类型	约束	说明
+id	bigint	PK, AUTO_INCREMENT	轮播项ID
+image_url	varchar(255)	NOT NULL	图片URL
+tag	varchar(50)	NULL	标签文本
+title	varchar(100)	NOT NULL	标题
+description	text	NULL	描述文本
+product_id	bigint	NULL, DEFAULT 0	关联商品ID
+sort_order	int	NULL, DEFAULT 0	排序序号
+status	tinyint(1)	NULL, DEFAULT 1	状态（0禁用，1启用）
+
+5系统实现与测试
+5.1用户注册与登录功能实现
+用户注册与登录是系统一切功能的前置条件。注册时，前端对用户填写的用户名、密码、邮箱等字段进行格式校验，通过后向后端提交注册请求，后端查重用户名、对密码进行BCrypt加密后将用户信息存入数据库，默认赋予user角色。登录时，后端验证用户名和密码，认证成功后生成携带用户ID和角色信息的JWT令牌返回给前端，前端将令牌存入本地存储，此后每次请求均在请求头中携带该令牌以完成身份识别。
+
+图5- 1 用户注册与登录功能实现
+
+5.1.1用户注册登录
+用户初始只能浏览农产品主页面宣传与展示信息，并不具备加入购物车以及收藏购买功能，需要用户进行注册登录，用来创建用户独有账号，实现购买，管理员和商户注册登录可以对商品进行管理上架、修改商品信息，如图5- 2和图5- 3所示
+
+图5- 2 注册界面
+
+
+图5- 3 登录界面
+5.1.2用户登录主界面
+
+
+图5- 4 用户主界面
+
+5.2商品管理功能实现
+商品管理是商家最核心的操作场景。商家在后台通过富文本编辑器填写商品描述，上传商品图片后系统将图片保存至本地文件目录并返回访问路径，商家完成商品分类、产地、价格、折扣价、库存等信息的填写后即可提交上架。商品列表页支持按名称、分类、状态等条件进行筛选，并提供分页展示。管理员账号对全平台商品具有管理权限，可对不符合平台规定的商品执行下架操作。
+
+图5- 5 商品管理功能实现
+
+5.2.1商家上架商品
+
+图5- 6 商品管理界面
+
+
+
+5.2.2商家编辑商品信息
+
+图5- 7 编辑商品
+
+5.3购物车与下单功能实现
+消费者在商品详情页点击"加入购物车"后，前端向后端发起请求，后端检查购物车中是否已存在该商品，若存在则更新数量，否则新建记录。消费者在购物车页面确认商品清单后选择下单，前端将所选商品、数量和收货地址信息提交给后端，后端在一个事务中完成商品库存校验、库存扣减和订单记录创建，任一步骤失败则整体回滚，保证数据一致性。订单创建成功后，购物车中对应的商品条目随即被清除。
+
+
+图5- 8 购物车与下单功能实现
+
+5.3.1购物车界面
+
+图5- 9 购物车
+5.3.2确认订单界面
+添加收货提交订单信息即可进行农产品购买
+
+图5- 10 确认订单
+
+
+图5- 11 新增地址
+5.4订单管理与物流跟踪功能实现
+消费者可在"我的订单"页面查看全部订单，并按照待支付、已支付、已发货、已完成等状态进行筛选。商家在后台订单列表中收到已支付订单后，填写物流公司和快递单号后执行发货操作，系统同步创建一条物流记录并将订单状态更新为已发货。消费者进入物流详情页时可查看物流公司、单号及预计到达时间等信息。若消费者对已支付或已发货的订单不满意，可发起退款申请并填写退款原因，管理员在后台审核后执行退款，系统记录退款时间并将订单状态流转至已退款。
+
+图5- 12 订单管理与物流跟踪功能实现
+
+
+5.4.1查看订单
+用户查看订单如图5- 13所示，商家查看消费者订单如图5- 14所示
+
+图5- 13 用户订单
+
+
+图5- 14 商家订单
+5.4.2查看物流
+用户查看物流信息如图5- 15所示，商家查看消费者物流情况如图5- 16所示
+
+图5- 15 用户物流信息
+
+
+图5- 16 商家物流管理
+5.5商品评价功能实现
+消费者只有在订单状态为已完成的情况下才能对所购商品发起评价。评价内容包括1至5星的评分以及文字描述，提交后评价处于待审核状态，不会立即显示在商品详情页。管理员在后台评价管理列表中审核通过后，评价方才对外可见。这一设计有效防止了刷评、恶意评价等情况的发生，保证了商品评价的参考价值。
+
+图5- 17 商品评价功能实现
+5.5.1用户评价商品
+
+图5- 18 商品评价
+5.5.2商家审核用户评价信息
+
+图5- 19 评价管理
+
+5.6库存管理功能实现
+商家和管理员可在库存管理模块中记录商品的入库与出库情况。入库操作需要填写商品、入库数量、采购单价、供应商和入库日期，系统在保存入库记录的同时自动将对应商品的库存数量增加相应数额。出库操作除记录出库商品和数量外，还需注明出库类型（销售出库、损耗出库或其他），方便后期进行库存异动的归因分析。所有库存操作均有操作人ID和时间戳记录，形成完整的库存变更历史。
+5.6.1商品入库管理
+
+图5- 20 入库管理
+5.6.2商品出库管理
+
+图5- 21 出库管理
+5.7内容管理功能实现
+平台内容管理包括首页轮播图、平台公告和农业资讯三个部分，均由管理员在后台进行维护。轮播图管理支持设置轮播图片、标题、标签文字及关联商品，并可通过排序序号控制轮播顺序和启用状态。平台公告面向全体用户展示最新平台动态，支持添加标签便于分类筛选。农业资讯板块提供农产品知识、时令蔬果推荐等内容，以浏览量指标反映内容热度，吸引用户关注和互动。轮播图管理界面如图5- 22所示
+
+图5- 22 轮播图管理
+5.8数据统计功能实现
+数据统计概览页面面向管理员和商家角色开放，以直观的图表形式展示关键运营数据。管理员可查看平台全量数据，包括用户总数、商品总数、订单总量、各状态订单分布等；商家则只能看到自己名下的商品和订单数据。统计数据通过SQL聚合查询从数据库中实时计算得出，数据刷新及时反映平台的最新运营状态，为商家调整商品策略和管理员把握平台运营方向提供数据支撑。数据统计信息界面如图5- 23所示
+
+图5- 23 数据统计
+5.9系统测试
+表5- 1 系统测试环境配置
+类别	测试内容	测试方法	配置
+功能测试
+	用户注册登录、商品发布上架、购物车操作、订单创建与支付、订单状态流转、商家发货、消费者确认收货、退款申请审核、商品评价提交审核
+	按业务流程逐一验证各功能模块
+	各主要功能均按预期运行，角色权限控制准确，数据隔离正常，订单状态流转符合设计要求
+
+接口测试
+	REST接口请求/响应格式、参数校验、异常处理、权限拦截机制
+	使用Postman工具测试各接口
+	接口格式正确，未携带Token返回401，越权访问返回403，权限拦截机制工作正常
+
+性能测试
+	商品列表查询并发访问、库存扣减并发控制
+	模拟多用户并发请求
+	接口响应时间在可接受范围内，数据库索引有效加速查询，事务机制保证无超卖问题
+
+
+6总结
+本文设计并实现了一套基于SpringBoot的农产品销售系统，围绕消费者、商家和管理员三类用户的核心需求，构建了涵盖商品展示与管理、在线交易与结算、物流跟踪、库存管理、商品评价、内容运营和数据统计的完整功能体系。
+在技术实现层面，系统采用SpringBoot与Vue.js前后端分离架构，后端以Controller-Service-Mapper三层结构组织业务代码，通过Spring Security与JWT实现角色级别的安全访问控制，以MyBatis-Plus完成数据持久化操作，MySQL数据库负责承载全部业务数据。这套技术组合在保证系统功能完整性的同时，也为后期功能扩展和维护提供了清晰的代码边界。
+在业务设计层面，系统针对农产品销售的特点做了有针对性的设计。商品信息支持产地标注和富文本描述，有助于消费者在购买时对农产品的来源和品质形成直观认知；订单设计了完整的状态流转机制，覆盖了从下单到退款的全周期；库存入出库记录的设计帮助商家追踪货源变化，对减少库存积压、合理安排采购具有实际参考价值；评价审核机制则从平台运营角度维护了商品口碑数据的可信度。
+在乡村振兴的政策背景下，农产品线上销售渠道的建设对于拓展农产品流通范围、提升农户收益具有现实意义。本系统提供了一套从前端展示到后端管理的完整解决方案，降低了农业经营主体进入电商领域的技术门槛，为中小规模农业经营者独立搭建线上销售平台提供了可参考的实践方案。
+受开发周期和个人能力所限，系统目前仍有一些可以深化的方向。在商品搜索方面，当前基于数据库模糊查询的方式在数据量增大后效率会有所下降，引入全文搜索引擎将是改善搜索体验的有效途径。在支付环节，当前系统对支付流程进行了简化处理，实际投入使用时需要接入真实的第三方支付接口。在移动端适配方面，现有界面以桌面端为主，开发移动端应用或对页面进行响应式改造将有助于覆盖更多通过手机购物的农村用户群体。此外，随着平台积累的交易数据增多，基于用户购买行为的个性化商品推荐功能也是提升平台用户体验的重要方向。这些方向都值得在后续工作中加以探索和完善。
+参考文献
+[1] 李晴. "互联网+农业"环境下菏泽市农产品上行发展路径研究[J]. 菏泽学院学报, 2022, 44(01): 28-32.
+[2] 郑镇航. 数字经济对产业结构升级的驱动作用研究——基于绿色技术创新的中介效应[J]. 湖北科技学院学报, 2024, 44(1): 37-48.
+[3] 杨金海, 唐喻, 王肖. 顾客满意度视角下的社区团购生鲜农产品配送系统优化[J]. 湖北科技学院学报, 2025, 45(02): 17-25.
+[4] 王文光. 机械水电设备的远程监控与维护技术探讨[J]. 中国高新科技, 2024(21): 102-104.
+[5] 黄东旭. 基于物联网的立磨机械电气自动化远程监控系统设计[J]. 自动化应用, 2024, 65(16): 133-135.
+[6] 孙先明. 基于物联网的农业机械远程监控系统功能开发[J]. 农机使用与维修, 2024(8): 92-94.
+[7] 王志强,李娟, 黄泽. "高校校园电子商务创业平台的设计与实现." 软件 46. 07 (2025): 29-32.
+[8] 王娟. "数商兴农”背景下电商平台驱动的农产品供应链优化路径研究." 现代商业研究 . 17 (2025): 28-30.
+[9] 双海军, 田桂瑛. "乡村振兴背景下农产品供应链协同发展策略研究." 物流科技 48. 21 (2025): 109-111. doi:10.13714/j.cnki.1002-3100.2025.21.027.
+[10] 郑韩京. Vue.js前端开发基础与项目实战. 人民邮电出版社, 2020.
+[11] 郝爱民. 农村三产融合的溢出效应. 社会科学文献出版社, 2024.
+[12] 廖仪慧. 数字经济赋能农业经济高质量发展：影响效应及作用机制. 2025. 桂林电子科技大学, MA thesis.
+[13] 罗晓宇,关钧元, 乜萌. "直播带货助力乡村农产品销售模式创新与路径优化." 产业创新研究 . 01 (2023): 78-80.
+[14] 付阳红. "乡村振兴背景下农业科技自立自强存在的问题与对策探究." 智慧农业导刊4. 13 (2024): 189-192. doi:10.20028/j.zhnydk.2024.13.044.
+致谢
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
