@@ -1,0 +1,110 @@
+<view class="container">
+  <view wx:if="{{hasStats}}" class="content">
+    <!-- 统计卡片顶部 -->
+    <view class="stat-card main-stat">
+      <view class="stat-row main-row">
+        <view class="stat-item">
+          <view class="stat-value">{{stats.total_reservations}}</view>
+          <view class="stat-label">总预约次数</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">{{stats.completed_reservations}}</view>
+          <view class="stat-label">完成次数</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">{{stats.no_show_times}}</view>
+          <view class="stat-label">缺座次数</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 信用分数卡片 -->
+    <view class="credit-card">
+      <view class="credit-header">
+        <view class="credit-label">信用积分</view>
+        <view class="credit-value {{stats.credit_score >= 80 ? 'credit-high' : stats.credit_score >= 60 ? 'credit-medium' : 'credit-low'}}">
+          {{stats.credit_score}}
+        </view>
+      </view>
+      <view class="credit-bar">
+        <view class="credit-bar-fill" style="width: {{Math.min(stats.credit_score, 100) * 100 / 100}}%"></view>
+      </view>
+      <view class="credit-info">
+        <text wx:if="{{stats.credit_score >= 90}}" class="credit-status">优秀</text>
+        <text wx:if="{{stats.credit_score >= 70 && stats.credit_score < 90}}" class="credit-status">良好</text>
+        <text wx:if="{{stats.credit_score < 70}}" class="credit-status warning">需改进</text>
+      </view>
+    </view>
+
+    <!-- 学习时间统计 -->
+    <view class="section">
+      <view class="section-title">学习统计</view>
+      <view class="stat-grid">
+        <view class="grid-item">
+          <view class="grid-value">{{stats.total_study_hours}}小时</view>
+          <view class="grid-label">总学习时长</view>
+        </view>
+        <view class="grid-item">
+          <view class="grid-value">{{stats.average_study_hours}}小时</view>
+          <view class="grid-label">平均每次</view>
+        </view>
+        <view class="grid-item">
+          <view class="grid-value">{{stats.study_consistency}}%</view>
+          <view class="grid-label">完成率</view>
+        </view>
+        <view class="grid-item">
+          <view class="grid-value">{{stats.cancelled_reservations}}</view>
+          <view class="grid-label">取消次数</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 最近7天统计 -->
+    <view class="section">
+      <view class="section-title">最近7天</view>
+      <view class="summary-list">
+        <view class="summary-item">
+          <view class="summary-label">预约次数</view>
+          <view class="summary-value">{{stats.last_7_days_summary.reservations}} 次</view>
+        </view>
+        <view class="summary-item">
+          <view class="summary-label">学习时长</view>
+          <view class="summary-value">{{stats.last_7_days_summary.study_hours}} 小时</view>
+        </view>
+        <view class="summary-item">
+          <view class="summary-label">缺座次数</view>
+          <view class="summary-value {{stats.last_7_days_summary.no_show_count > 0 ? 'warning' : ''}}">
+            {{stats.last_7_days_summary.no_show_count}} 次
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 用户习惯 -->
+    <view class="section" wx:if="{{stats.most_visited_room || stats.most_visited_time_slot}}">
+      <view class="section-title">使用习惯</view>
+      <view class="habit-list">
+        <view class="habit-item" wx:if="{{stats.most_visited_room}}">
+          <view class="habit-label">最常用</view>
+          <view class="habit-value">{{stats.most_visited_room.name}}</view>
+          <view class="habit-count">{{stats.most_visited_room.visit_count}} 次</view>
+        </view>
+        <view class="habit-item" wx:if="{{stats.most_visited_time_slot}}">
+          <view class="habit-label">常用时段</view>
+          <view class="habit-value">{{stats.most_visited_time_slot}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作 -->
+    <view class="section bottom-section">
+      <button class="reset-btn" bindtap="onRefresh">刷新数据</button>
+    </view>
+  </view>
+
+  <view wx:else class="empty">
+    <view class="empty-icon">📊</view>
+    <view class="empty-text" wx:if="{{isLoading}}">加载中...</view>
+    <view class="empty-text" wx:else>暂无统计数据</view>
+  </view>
+</view>

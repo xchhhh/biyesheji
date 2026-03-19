@@ -1,0 +1,24 @@
+{
+  "test_config": {
+    "num_users": 100,
+    "api_url": "http://localhost:5000",
+    "test_type": "simple_concurrent"
+  },
+  "results": {
+    "total_requests": 100,
+    "successful_requests": 2,
+    "failed_requests": 98,
+    "success_rate": "2.00%",
+    "errors": {
+      "HTTP_500": {
+        "count": 98,
+        "messages": [
+          "{\n  \"code\": 400,\n  \"data\": null,\n  \"message\": \"\\u7cfb\\u7edf\\u9519\\u8bef: 'User' object has no attrib",
+          "{\n  \"code\": 400,\n  \"data\": null,\n  \"message\": \"\\u7cfb\\u7edf\\u9519\\u8bef: 'User' object has no attrib",
+          "{\n  \"code\": 400,\n  \"data\": null,\n  \"message\": \"\\u7cfb\\u7edf\\u9519\\u8bef: 'User' object has no attrib"
+        ]
+      }
+    }
+  },
+  "timestamp": "2026-03-17T17:33:53.347737"
+}

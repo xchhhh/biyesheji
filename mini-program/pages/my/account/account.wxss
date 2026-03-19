@@ -1,0 +1,320 @@
+.container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.content {
+  padding: 0;
+}
+
+/* 用户卡片 */
+.profile-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  margin: 0;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar-text {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.phone {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.credit {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.credit-score {
+  font-weight: bold;
+  font-size: 14px;
+  color: #ffd700;
+}
+
+/* 区块 */
+.section {
+  background: white;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #f9f9f9;
+}
+
+/* 信息列表 */
+.info-list {
+  padding: 0;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #666;
+  font-size: 14px;
+  flex: 1;
+}
+
+.value {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  max-width: 200px;
+}
+
+.status-active {
+  color: #4caf50;
+}
+
+.status-inactive {
+  color: #f44336;
+}
+
+/* 按钮 */
+.action-button {
+  width: calc(100% - 30px);
+  margin: 10px 15px;
+  padding: 12px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+button.action-button:after {
+  border: none;
+}
+
+.secondary-btn {
+  background-color: #42a5f5;
+}
+
+.danger-btn {
+  background-color: #f44336;
+}
+
+.danger-section {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.warning-text {
+  font-size: 12px;
+  color: #f44336;
+  padding: 0 15px 15px 15px;
+  line-height: 1.6;
+}
+
+/* 模态框 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  width: 100%;
+  border-radius: 16px 16px 0 0;
+  padding: 20px;
+  padding-top: 15px;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header.warning {
+  color: #f44336;
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+/* 警告内容 */
+.warning-content {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.warning-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.warning-message {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* 模态框操作 */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.modal-btn.cancel-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.modal-btn.confirm-btn {
+  background-color: #667eea;
+  color: white;
+}
+
+.modal-btn.danger-btn-modal {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.login-link {
+  color: #667eea;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #667eea;
+  border-radius: 6px;
+  display: inline-block;
+}

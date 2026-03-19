@@ -1,0 +1,149 @@
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">座位签到</text>
+    <text class="page-subtitle">扫描二维码或手动输入预约号进行签到</text>
+  </view>
+
+  <!-- 标签页选择 -->
+  <view class="tab-container">
+    <view 
+      class="tab-item {{activeTab === 'qr' ? 'active' : ''}}"
+      data-tab="qr"
+      bindtap="onTabChange"
+    >
+      <text class="tab-icon">📱</text>
+      <text class="tab-label">二维码扫描</text>
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'manual' ? 'active' : ''}}"
+      data-tab="manual"
+      bindtap="onTabChange"
+    >
+      <text class="tab-icon">✍️</text>
+      <text class="tab-label">手动输入</text>
+    </view>
+  </view>
+
+  <!-- 错误消息 -->
+  <view wx:if="{{errorMessage}}" class="alert alert-error">
+    <text class="alert-title">❌ 签到失败</text>
+    <text class="alert-message">{{errorMessage}}</text>
+  </view>
+
+  <!-- 成功消息 -->
+  <view wx:if="{{successMessage}}" class="alert alert-success">
+    <text class="alert-title">✅ {{successMessage}}</text>
+  </view>
+
+  <!-- QR扫描标签页 -->
+  <view wx:if="{{activeTab === 'qr'}}" class="tab-content">
+    <view class="qr-section">
+      <view class="qr-icon">📷</view>
+      <text class="qr-title">扫描二维码</text>
+      <text class="qr-description">点击下方按钮启动扫描，对准座位上的二维码</text>
+
+      <button 
+        class="primary-button"
+        bindtap="startQRScanner"
+        disabled="{{isSubmitting}}"
+        loading="{{isSubmitting}}"
+      >
+        {{isSubmitting ? '处理中...' : '开始扫描'}}
+      </button>
+
+      <!-- 扫描结果显示 -->
+      <view wx:if="{{scannedQRCode}}" class="scan-result">
+        <text class="result-label">扫描条码:</text>
+        <text class="result-value">{{scannedQRCode}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 手动输入标签页 -->
+  <view wx:if="{{activeTab === 'manual'}}" class="tab-content">
+    <view class="manual-section">
+      <view class="form-group">
+        <label class="form-label">预约号</label>
+        <input
+          class="form-input"
+          type="number"
+          placeholder="请输入预约号"
+          value="{{reservationId}}"
+          bindinput="onReservationIdInput"
+          disabled="{{isSubmitting}}"
+        />
+      </view>
+
+      <view class="form-group">
+        <label class="form-label">预约代码 (可选)</label>
+        <input
+          class="form-input"
+          type="text"
+          placeholder="请输入预约代码"
+          value="{{reservationCode}}"
+          bindinput="onReservationCodeInput"
+          disabled="{{isSubmitting}}"
+        />
+      </view>
+
+      <button 
+        class="primary-button"
+        bindtap="onManualCheckIn"
+        disabled="{{isSubmitting || !reservationId}}"
+        loading="{{isSubmitting}}"
+      >
+        {{isSubmitting ? '签到中...' : '确认签到'}}
+      </button>
+
+      <view class="tips">
+        <text class="tips-title">💡 提示:</text>
+        <text class="tips-text">• 预约号是您预约座位时获得的唯一标识</text>
+        <text class="tips-text">• 可在"我的预约"页面查看</text>
+        <text class="tips-text">• 预约代码为可选项</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 预约信息显示 -->
+  <view wx:if="{{showReservationInfo}}" class="reservation-info">
+    <view class="info-header">预约信息</view>
+    
+    <view class="info-item">
+      <text class="info-label">座位号:</text>
+      <text class="info-value">{{reservationInfo.seat_number}}</text>
+    </view>
+
+    <view class="info-item">
+      <text class="info-label">阅览室:</text>
+      <text class="info-value">{{reservationInfo.room_name}}</text>
+    </view>
+
+    <view class="info-item">
+      <text class="info-label">预约日期:</text>
+      <text class="info-value">{{reservationInfo.reservation_date}}</text>
+    </view>
+
+    <view class="info-item">
+      <text class="info-label">时间段:</text>
+      <text class="info-value">{{reservationInfo.time_slot}}</text>
+    </view>
+
+    <view class="info-item">
+      <text class="info-label">状态:</text>
+      <text class="info-value {{reservationInfo.status === 'checked_in' ? 'status-success' : ''}}">
+        {{reservationInfo.status === 'checked_in' ? '已签到' : reservationInfo.status}}
+      </text>
+    </view>
+
+    <view class="button-group">
+      <button class="secondary-button" bindtap="onBackToHome">返回首页</button>
+      <button class="secondary-button" bindtap="onBackToSeats">选择座位</button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{isLoading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+</view>

@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+POST,/api/reservations/reserve,HTTPError('404 Client Error: NOT FOUND for url: /api/reservations/reserve'),67
+GET,/api/reservations/list,HTTPError('404 Client Error: NOT FOUND for url: /api/reservations/list'),24
+GET,/api/reservations/seats/[room_id],HTTPError('500 Server Error: INTERNAL SERVER ERROR for url: /api/reservations/seats/[room_id]'),14

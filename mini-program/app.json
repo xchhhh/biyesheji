@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/register/register",
+    "pages/seats/seats",
+    "pages/checkin/checkin",
+    "pages/my/my",
+    "pages/my/account/account",
+    "pages/my/statistics/statistics",
+    "pages/maintenance/maintenance",
+    "pages/index/index"
+  ],
+  "window": {
+    "backgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#3c6fda",
+    "navigationBarTitleText": "自习室座位预约",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#3c6fda",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/seats/seats",
+        "text": "座位预约"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+    ]
+  },
+  "requiredBackgroundModes": [],
+  "permission": {},
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000,
+    "uploadFile": 10000
+  }
+}

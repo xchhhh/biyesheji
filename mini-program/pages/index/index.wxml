@@ -1,0 +1,79 @@
+<view class="container">
+  <!-- 顶部欢迎区域 -->
+  <view class="welcome-section animate-slide-up">
+    <view class="greeting-text">
+      <text class="greeting-title">🎓 欢迎使用</text>
+      <text class="greeting-subtitle">图书馆智能座位预约系统</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单卡片 -->
+  <view class="menu-grid">
+    <!-- 查看座位 -->
+    <view class="menu-card" bindtap="navigateToSeats">
+      <view class="menu-icon">🪑</view>
+      <text class="menu-title">查看座位</text>
+      <text class="menu-desc">浏览及预约座位</text>
+      <view class="menu-arrow">→</view>
+    </view>
+
+    <!-- 我的预约 -->
+    <view class="menu-card" bindtap="navigateToReservations">
+      <view class="menu-icon">📋</view>
+      <text class="menu-title">我的预约</text>
+      <text class="menu-desc">管理预约记录</text>
+      <view class="menu-arrow">→</view>
+    </view>
+
+    <!-- 签到 -->
+    <view class="menu-card" bindtap="navigateToCheckin">
+      <view class="menu-icon">✨</view>
+      <text class="menu-title">签到确认</text>
+      <text class="menu-desc">确认座位使用</text>
+      <view class="menu-arrow">→</view>
+    </view>
+
+    <!-- 个人中心 -->
+    <view class="menu-card" bindtap="navigateToMy">
+      <view class="menu-icon">👤</view>
+      <text class="menu-title">个人中心</text>
+      <text class="menu-desc">查看个人信息</text>
+      <view class="menu-arrow">→</view>
+    </view>
+  </view>
+
+  <!-- 统计数据卡片 -->
+  <view class="stats-section card">
+    <view class="card-header">
+      <text class="card-title">📊 使用统计</text>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{totalReservations}}</text>
+        <text class="stat-label">总预约次数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{usageRate}}%</text>
+        <text class="stat-label">完成率</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{creditScore}}</text>
+        <text class="stat-label">信用积分</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 公告卡片 -->
+  <view class="announcement-card card" wx:if="{{announcement}}">
+    <view class="announcement-badge">📢 最新公告</view>
+    <text class="announcement-title">{{announcement.title}}</text>
+    <text class="announcement-content">{{announcement.content}}</text>
+    <text class="announcement-time">{{announcement.time}}</text>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text class="tip-icon">💡</text>
+    <text class="tip-text">提示：请及时签到，避免被记录为缺席</text>
+  </view>
+</view>

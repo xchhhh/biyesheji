@@ -1,0 +1,428 @@
+/* 登录页面 - 现代化设计 */
+page {
+  /* 使用最稳妥的渲染方式，避免GPU和CPU渲染打架 */
+  background: #667eea; 
+  height: 100%;
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* 去掉这层的渐变，采用独立的纯背景层 */
+  padding: 32rpx 0;
+  box-sizing: border-box;
+}
+
+/* 重新启用这个元素并改变思路：将其放大到远超屏幕尺寸并固定，使其不受输入法弹起导致的视口变化影响，彻底干掉重绘闪烁 */
+.login-bg {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200vw;
+  height: 200vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  z-index: -1;
+  pointer-events: none; /* 防止遮挡点击事件 */
+}
+
+.login-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0 60rpx;
+  box-sizing: border-box;
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0); /* 开启硬件加速，防止点击周围元素引起的重绘闪黑 */
+}
+
+/* ===== Logo 区域 ===== */
+.login-logo-section {
+  text-align: center;
+  margin-bottom: 48rpx;
+  color: white;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.logo-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+  animation: slideDown 0.6s ease-in-out;
+}
+
+.logo-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  margin-bottom: 12rpx;
+}
+
+.logo-subtitle {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* ===== 登录表单 ===== */
+.login-form {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== 表单组 ===== */
+.form-group {
+  margin-bottom: 32rpx;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 40rpx;
+}
+
+/* ===== 输入框包装 ===== */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 72rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  background: #fafafa;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-wrapper:focus-within {
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4rpx rgba(102, 126, 234, 0.15);
+  transform: translateY(-2rpx);
+}
+
+.input-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  display: block;
+}
+
+.input-field {
+  flex: 1;
+  height: 100%;
+  min-height: 72rpx;
+  font-size: 30rpx;
+  color: #262626;
+  border: none;
+  background: transparent;
+  outline: none;
+  line-height: 72rpx;
+  display: flex;
+  align-items: center;
+}
+
+.input-field::placeholder {
+  color: #888;
+  line-height: normal;
+}
+
+.placeholder {
+  font-size: 30rpx;
+  color: #888;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* ===== 按钮 ===== */
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  margin: 0;
+  font-size: 32rpx;
+  font-weight: 700;
+  border: none;
+  border-radius: 12rpx;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.3);
+  transition: all 0.2s ease-out; /* 使用更快的缓动解决轻微闪回问题 */
+  transform: translateZ(0); /* 防止 transform 动画导致重绘闪屏 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.2);
+}
+
+.btn-text {
+  display: block;
+}
+
+/* ===== 页脚链接 ===== */
+.login-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+.footer-link {
+  display: inline-block;
+  transition: all 0.3s ease;
+  line-height: 1.5;
+}
+
+.footer-link:active {
+  opacity: 0.7;
+}
+
+.link-highlight {
+  color: #667eea;
+  font-weight: 600;
+  margin-left: 4rpx;
+}
+
+/* ===== 错误提示 ===== */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: rgba(255, 77, 77, 0.1);
+  border: 1rpx solid rgba(255, 77, 77, 0.3);
+  color: #d9534f;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  margin-top: 24rpx;
+  font-size: 26rpx;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.error-icon {
+  font-size: 28rpx;
+  display: block;
+}
+
+.error-text {
+  flex: 1;
+}
+
+/* 动画 */
+@keyframes slideUp {
+  from {
+    transform: translateY(30rpx);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30rpx);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.checkbox {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 10rpx;
+}
+
+.checkbox-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.btn {
+  width: 100%;
+  height: 80rpx;
+  background-color: #3c6fda;
+  color: white;
+  border: none;
+  border-radius: 5rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-top: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.btn:active {
+  opacity: 0.9;
+}
+
+.link {
+  text-align: center;
+  margin-top: 20rpx;
+}
+
+.link text {
+  color: #3c6fda;
+  font-size: 26rpx;
+}
+
+.error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 15rpx;
+  margin-top: 20rpx;
+  border-radius: 5rpx;
+  font-size: 26rpx;
+}
+
+/* 表单容器 */
+.form-container {
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 40rpx 30rpx;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30rpx;
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 20rpx;
+}
+
+/* 标签 */
+.label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+/* 输入框 */
+.input-field {
+  width: 100%;
+  padding: 16rpx 20rpx;
+  font-size: 28rpx;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  line-height: 40rpx;
+  background-color: #fafafa;
+  color: #333;
+}
+
+.input-field:focus {
+  border-color: #667eea;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
+}
+
+.placeholder-text {
+  color: #999;
+}
+
+/* 选项行 */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 复选框 */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+checkbox {
+  margin-right: 8rpx;
+}
+
+/* 忘记密码 */
+.forgot-password {
+  color: #667eea;
+  font-weight: bold;
+}
+
+/* 登录按钮 */
+.login-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 18rpx 0;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 20rpx;
+  transition: all 0.3s ease;
+}
+
+.login-button::after {
+  border: none;
+}
+
+.login-button:active:not(.disabled) {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.login-button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 注册链接 */
+.register-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.register-link text {
+  margin: 0 8rpx;
+}
+
+.link-text {
+  color: #667eea;
+  font-weight: bold;
+  border-bottom: 1px solid #667eea;
+}
+
+/* 底部说明 */
+.footer-note {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 24rpx;
+  padding: 20rpx;
+}

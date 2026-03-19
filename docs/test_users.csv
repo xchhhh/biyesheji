@@ -1,0 +1,11 @@
+id,username,email,phone,password,nickname
+1,test_user_1,test_1@example.com,13800000001,test123456,测试用户_1
+2,test_user_2,test_2@example.com,13800000002,test123456,测试用户_2
+3,test_user_3,test_3@example.com,13800000003,test123456,测试用户_3
+4,test_user_4,test_4@example.com,13800000004,test123456,测试用户_4
+5,test_user_5,test_5@example.com,13800000005,test123456,测试用户_5
+6,test_user_6,test_6@example.com,13800000006,test123456,测试用户_6
+7,test_user_7,test_7@example.com,13800000007,test123456,测试用户_7
+8,test_user_8,test_8@example.com,13800000008,test123456,测试用户_8
+9,test_user_9,test_9@example.com,13800000009,test123456,测试用户_9
+10,test_user_10,test_10@example.com,13800000010,test123456,测试用户_10

@@ -1,0 +1,400 @@
+/* 注册页面 - 现代化设计 */
+page {
+  background: #667eea;
+  height: 100%;
+}
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.register-bg {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200vw;
+  height: 200vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.register-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  margin: 0 auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 0;
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== 顶部导航 ===== */
+.register-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  color: white;
+  font-weight: 600;
+}
+
+.nav-back {
+  font-size: 26rpx;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.nav-back:active {
+  opacity: 0.7;
+}
+
+.nav-title {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.nav-placeholder {
+  width: 50rpx;
+}
+
+/* ===== Logo区域 ===== */
+.register-logo-section {
+  text-align: center;
+  margin-bottom: 32rpx;
+  color: white;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.logo-icon {
+  font-size: 64rpx;
+  display: block;
+  margin-bottom: 16rpx;
+  animation: slideDown 0.6s ease-in-out;
+}
+
+.logo-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.logo-subtitle {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* ===== 消息提示 ===== */
+.error-message,
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  margin: 0 24rpx 20rpx;
+  font-size: 26rpx;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.error-message {
+  background: rgba(255, 77, 77, 0.1);
+  border: 1rpx solid rgba(255, 77, 77, 0.3);
+  color: #d9534f;
+}
+
+.error-icon {
+  font-size: 28rpx;
+  display: block;
+}
+
+.error-text {
+  flex: 1;
+}
+
+.success-message {
+  background: rgba(82, 196, 26, 0.1);
+  border: 1rpx solid rgba(82, 196, 26, 0.3);
+  color: #52c41a;
+}
+
+.success-icon {
+  font-size: 28rpx;
+  display: block;
+}
+
+.success-text {
+  flex: 1;
+}
+
+/* ===== 注册表单 ===== */
+.register-form {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+  margin: 0 24rpx 20rpx;
+  animation: slideUp 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== 步骤指示器 ===== */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40rpx;
+}
+
+.step {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  font-weight: 700;
+  background: #f0f0f0;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.step.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.3);
+}
+
+.step-line {
+  flex: 1;
+  height: 2rpx;
+  background: #e8e8e8;
+  margin: 0 8rpx;
+  transition: all 0.3s ease;
+}
+
+.step-line.active {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+/* ===== 表单部分 ===== */
+.form-section {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #262626;
+  margin-bottom: 24rpx;
+}
+
+/* ===== 表单组 ===== */
+.form-group {
+  margin-bottom: 24rpx;
+}
+
+.label {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 12rpx;
+}
+
+.required {
+  color: #f5222d;
+}
+
+/* ===== 输入框包装 ===== */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 56rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 12rpx;
+  padding: 0 16rpx;
+  background: #fafafa;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-wrapper:focus-within {
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3rpx rgba(102, 126, 234, 0.1);
+}
+
+.input-icon {
+  font-size: 24rpx;
+  margin-right: 12rpx;
+  display: block;
+}
+
+.input-field {
+  flex: 1;
+  font-size: 28rpx;
+  color: #262626;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+.placeholder {
+  color: #ccc;
+}
+
+/* ===== 密码强度指示器 ===== */
+.password-strength {
+  margin-top: 12rpx;
+}
+
+.strength-bar {
+  height: 4rpx;
+  background: #e8e8e8;
+  border-radius: 2rpx;
+  overflow: hidden;
+  margin-bottom: 8rpx;
+}
+
+.strength-bar::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: #999;
+  animation: fillBar 0.3s ease;
+}
+
+.strength-bar.weak::after {
+  background: #f5222d;
+  width: 33.33%;
+}
+
+.strength-bar.medium::after {
+  background: #faad14;
+  width: 66.66%;
+}
+
+.strength-bar.strong::after {
+  background: #52c41a;
+  width: 100%;
+}
+
+.strength-text {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+}
+
+@keyframes fillBar {
+  from {
+    width: 0;
+  }
+}
+
+/* ===== 表单动作 ===== */
+.form-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 40rpx;
+  width: 100%;
+}
+
+.form-actions button {
+  flex: 1;
+  margin: 0;
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 0;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.form-actions .btn-secondary {
+  background: white;
+  border: 2rpx solid #e8e8e8;
+  color: #666;
+  border-radius: 12rpx;
+}
+
+.form-actions .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12rpx;
+}
+
+/* ===== 页脚协议 ===== */
+.footer-agreement {
+  text-align: center;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 30rpx 40rpx;
+  margin-top: 20rpx;
+  line-height: 1.6;
+}
+
+.agreement-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.agreement-link {
+  color: white;
+  text-decoration: underline;
+  font-weight: 600;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.agreement-link:active {
+  opacity: 0.7;
+}
+
+/* 动画 */
+@keyframes slideUp {
+  from {
+    transform: translateY(30rpx);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30rpx);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

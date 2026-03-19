@@ -1,0 +1,253 @@
+<!--座位选择页面 WXML-->
+<view class="seats-container">
+  <!-- 加载指示器 -->
+  <view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="spinner"></view>
+    <text class="loading-text">加载座位信息中...</text>
+  </view>
+
+  <!-- 座位热力表 - 简约设计 -->
+  <view class="heatmap-section" wx:if="{{showHeatmap && !isLoading}}">
+    <view class="heatmap-header" bindtap="toggleHeatmap">
+      <view class="heatmap-title">座位热度排行</view>
+      <text class="heatmap-toggle">{{heatmapExpanded ? '▲' : '▼'}}</text>
+    </view>
+    
+    <!-- 热力内容（可展开折叠） -->
+    <view class="heatmap-content {{heatmapExpanded ? 'expanded' : 'collapsed'}}">
+      <!-- 最热座位 Top 3 -->
+      <view class="heatmap-category">
+        <view class="category-header">
+          <text class="category-badge">🔥</text>
+          <text class="category-name">最受欢迎</text>
+        </view>
+        <view class="heatmap-items">
+          <view 
+            wx:for="{{topHotSeats}}" 
+            wx:key="seatId" 
+            class="heatmap-seat-item {{item.status === 0 ? 'available' : 'unavailable'}}"
+            bindtap="onSelectHeatmapSeat"
+            data-seat-id="{{item.seatId}}">
+            <view class="heat-bar" style="width: {{item.percentHeat}}%"></view>
+            <text class="seat-label">{{item.seatNumber}}</text>
+            <text class="heat-percent">{{item.percentHeat}}%</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 冷门座位 Top 3 -->
+      <view class="heatmap-category">
+        <view class="category-header">
+          <text class="category-badge">❄️</text>
+          <text class="category-name">冷门座位</text>
+        </view>
+        <view class="heatmap-items">
+          <view 
+            wx:for="{{topColdSeats}}" 
+            wx:key="seatId"
+            class="heatmap-seat-item {{item.status === 0 ? 'available' : 'unavailable'}}"
+            bindtap="onSelectHeatmapSeat"
+            data-seat-id="{{item.seatId}}">
+            <view class="heat-bar cold" style="width: {{item.percentHeat}}%"></view>
+            <text class="seat-label">{{item.seatNumber}}</text>
+            <text class="heat-percent">{{item.percentHeat}}%</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 热力条图例 -->
+      <view class="heatmap-legend">
+        <view class="heatmap-gradient-bar"></view>
+        <view class="heatmap-labels">
+          <text>低热度</text>
+          <text>中热度</text>
+          <text>高热度</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 楼层切换 -->
+  <view class="floor-selector-section" wx:if="{{!isLoading}}">
+    <view class="section-header">
+      <text class="section-title">🏢 选择楼层</text>
+    </view>
+    <view class="floor-buttons">
+      <view 
+        wx:for="{{roomList}}" 
+        wx:key="id"
+        class="floor-button {{selectedRoomIndex === index ? 'active' : ''}}"
+        bindtap="onSelectRoom"
+        data-index="{{index}}">
+        <view class="floor-number">{{item.name}}</view>
+        <view class="floor-hint">点击切换</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 所有座位列表 - 主要内容区 -->
+  <view class="all-seats-section" wx:if="{{!isLoading && showAllSeats}}">
+    <view class="section-header">
+      <text class="section-title">📋 座位选择</text>
+      <view class="refresh-button" bindtap="onRefreshSeats" style="margin-left: auto;">
+        <text class="refresh-icon">🔄</text>
+        <text class="refresh-text">刷新</text>
+      </view>
+    </view>
+    
+    <view class="all-seats-list">
+      <view wx:for="{{rows}}" wx:key="index" class="seat-row-list">
+        <view wx:for="{{item}}" wx:for-item="seat" wx:key="seatId" class="seat-list-item {{seat.statusClass}}" bindtap="onSelectSeat" data-seat-id="{{seat.seatId}}" data-disabled="{{seat.status !== 0}}">
+          {{seat.seatNumber}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无座位数据提示 -->
+  <view class="empty-state" wx:if="{{!isLoading && rows.length === 0}}">
+    <view class="empty-icon">📋</view>
+    <text>暂无座位信息</text>
+    <text class="empty-hint">请稍后重试</text>
+  </view>
+
+  <!-- 我的预约按钮 -->
+  <view class="actions">
+    <button class="btn-secondary" bindtap="onGetRecommendations">🎯 推荐座位</button>
+    <button class="btn-primary" bindtap="onMyReservations">我的预约</button>
+  </view>
+
+  <!-- 座位推荐模态框 -->
+  <view class="modal-overlay {{showRecommendModal ? 'show' : ''}}" bindtap="onCloseRecommendModal"></view>
+  
+  <view class="modal {{showRecommendModal ? 'show' : ''}}">
+    <view class="modal-header">
+      <text>🎯 推荐座位</text>
+      <view class="modal-close" bindtap="onCloseRecommendModal">✕</view>
+    </view>
+
+    <view class="modal-content">
+      <view wx:if="{{isLoadingRecommendations}}" class="loading-state">
+        <view class="spinner"></view>
+        <text>正在推荐座位...</text>
+      </view>
+
+      <view wx:elif="{{recommendations && recommendations.length > 0}}" class="recommendations-list">
+        <view class="recommend-intro">
+          {{recommendationReason}}
+        </view>
+        
+        <view wx:for="{{recommendations}}" wx:key="seat_id" class="recommend-item" bindtap="onSelectRecommendedSeat" data-seat-id="{{item.seat_id}}" data-room-id="{{item.room_id}}">
+          <view class="recommend-header">
+            <view class="seat-badge">{{item.seat_number}}</view>
+            <view class="room-label">{{item.room_name}}</view>
+            <view class="score-badge">⭐ {{item.recommendation_score}}</view>
+          </view>
+          
+          <view class="recommend-stats">
+            <view class="stat">
+              <text class="stat-label">拥挤度</text>
+              <view class="stat-bar">
+                <view class="stat-bar-fill" style="width: {{item.crowding_level * 100}}%; background-color: {{item.crowding_level > 0.5 ? '#f44336' : item.crowding_level > 0.3 ? '#ff9800' : '#4caf50'}};"></view>
+              </view>
+              <text class="stat-value">{{item.crowdingPercent}}%</text>
+            </view>
+          </view>
+
+          <view class="recommend-reason">
+            <text class="reason-icon">💡</text>
+            <text class="reason-text">{{item.reason}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else class="no-recommendations">
+        <view class="empty-icon">😕</view>
+        <view class="empty-text">暂无推荐座位</view>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="onCloseRecommendModal">关闭</button>
+    </view>
+  </view>
+
+  <!-- 预约确认模态框 -->
+  <view class="modal-overlay {{showModal ? 'show' : ''}}" bindtap="onCancelModal"></view>
+  
+  <view class="modal {{showModal ? 'show' : ''}}">
+    <view class="modal-header">
+      <text>确认预约</text>
+      <view class="modal-close" bindtap="onCancelModal">✕</view>
+    </view>
+
+    <view class="modal-content" wx:if="{{selectedSeat}}">
+      <view class="seat-info">
+        <view class="info-row">
+          <text class="label">座位号:</text>
+          <text class="value">{{selectedSeat.seatNumber}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">阅览室:</text>
+          <text class="value">{{roomList[selectedRoomIndex].name}}</text>
+        </view>
+      </view>
+
+      <!-- 日期和时间选择 -->
+      <view class="picker-group">
+        <view class="picker-item">
+          <text class="picker-label">预约日期:</text>
+          <picker 
+            mode="date" 
+            value="{{reservedDate}}"
+            start="{{today}}"
+            end="{{maxDate}}"
+            bindchange="onSelectDate">
+            <view class="picker-value">{{reservedDate}}</view>
+          </picker>
+        </view>
+
+        <view class="picker-item">
+          <text class="picker-label">时间段:</text>
+          <picker 
+            mode="selector"
+            range="{{timeSlots}}"
+            value="{{selectedTimeSlot}}"
+            bindchange="onSelectTimeSlot">
+            <view class="picker-value">{{timeSlots[selectedTimeSlot] || '请选择'}}</view>
+          </picker>
+        </view>
+
+        <!-- 时间槽显示列表 (可选增强) -->
+        <view class="time-slots-display">
+          <view class="time-slot-title">可选时间段：</view>
+          <view class="time-slots-list">
+            <view wx:for="{{timeSlots}}" wx:key="index" class="time-slot-item {{selectedTimeSlot === index ? 'selected' : ''}}" bindtap="onSelectTimeSlot" data-index="{{index}}">
+              {{item}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 预约说明 -->
+      <view class="notes">
+        <view class="note-item">• 预约后请在规定时间内签到，逾期不候</view>
+        <view class="note-item">• 迟到30分钟以上将被记作失约</view>
+        <view class="note-item">• 失约将扣除信用积分，影响后续预约</view>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="onCancelModal">取消</button>
+      <button class="btn-primary" bindtap="onConfirmReservation" disabled="{{isSubmitting}}">
+        {{isSubmitting ? '提交中...' : '确认预约'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 加载中指示器 -->
+  <view class="loading-overlay {{isLoading ? 'show' : ''}}">
+    <view class="spinner"></view>
+    <text>加载中...</text>
+  </view>
+</view>

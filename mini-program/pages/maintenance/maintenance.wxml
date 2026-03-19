@@ -1,0 +1,227 @@
+<!--座位维修申请页面 WXML-->
+<view class="maintenance-container">
+  <!-- 加载指示器 -->
+  <view wx:if="{{isLoading && activeTab === 1}}" class="loading-overlay">
+    <view class="spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 标签页切换 -->
+  <view class="tabs">
+    <view class="tab-header">
+      <view 
+        class="tab-item {{activeTab === 0 ? 'active' : ''}}"
+        data-tab="0"
+        bindtap="onTabChange">
+        <text class="tab-icon">📝</text>
+        <text class="tab-label">申报维修</text>
+      </view>
+      <view 
+        class="tab-item {{activeTab === 1 ? 'active' : ''}}"
+        data-tab="1"
+        bindtap="onTabChange">
+        <text class="tab-icon">📋</text>
+        <text class="tab-label">申报历史</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签页1: 申报维修 -->
+  <view class="tab-content" wx:if="{{activeTab === 0}}">
+    <view class="section">
+      <!-- 座位号输入 -->
+      <view class="form-group">
+        <view class="label">座位号 <text class="required">*</text></view>
+        <view class="input-group">
+          <input 
+            class="seat-input"
+            type="text"
+            placeholder="输入座位号(如:A-001)或扫一扫"
+            value="{{seatInput}}"
+            data-field="seatInput"
+            bindinput="onInput"
+            onfocus="onInputFocus"
+          />
+          <view class="scan-btn" bindtap="onScanQRCode">
+            <text>📱</text>
+          </view>
+        </view>
+        <view class="hint">支持格式: A-001, A001, 1100</view>
+      </view>
+
+      <!-- 问题类型选择 -->
+      <view class="form-group">
+        <view class="label">问题类型 <text class="required">*</text></view>
+        <view class="issue-type-grid">
+          <view 
+            wx:for="{{issueTypes}}"
+            wx:key="value"
+            class="issue-type-item {{issueType === item.value ? 'selected' : ''}}"
+            data-type="{{item.value}}"
+            bindtap="onIssueTypeChange">
+            <text class="issue-icon">{{item.icon}}</text>
+            <text class="issue-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 严重程度选择 -->
+      <view class="form-group">
+        <view class="label">严重程度 <text class="required">*</text></view>
+        <view class="severity-group">
+          <view 
+            wx:for="{{severities}}"
+            wx:key="value"
+            class="severity-item {{severity === item.value ? 'selected' : ''}}"
+            data-severity="{{item.value}}"
+            bindtap="onSeverityChange">
+            <text class="severity-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 问题描述 -->
+      <view class="form-group">
+        <view class="label">问题描述 <text class="required">*</text></view>
+        <textarea 
+          class="textarea"
+          placeholder="详细描述座位存在的问题，如:扶手折断、坐垫破损等"
+          value="{{description}}"
+          data-field="description"
+          bindinput="onInput"
+          maxlength="500"
+        />
+        <view class="char-count">{{description.length}}/500</view>
+      </view>
+
+      <!-- 联系电话 -->
+      <view class="form-group">
+        <view class="label">联系电话</view>
+        <input 
+          class="input"
+          type="text"
+          placeholder="留下您的电话方便管理员联系"
+          value="{{phone}}"
+          data-field="phone"
+          bindinput="onInput"
+        />
+      </view>
+
+      <!-- 提交按钮 -->
+      <view class="submit-btn {{isSubmitting ? 'disabled' : ''}}">
+        <button 
+          class="btn-primary"
+          bindtap="onSubmit"
+          disabled="{{isSubmitting}}">
+          {{isSubmitting ? '提交中...' : '提交维修申报'}}
+        </button>
+      </view>
+
+      <!-- 提示信息 -->
+      <view class="tips">
+        <text class="tip-title">💡 提示:</text>
+        <view class="tip-item">1. 请准确描述座位问题，以便管理员快速处理</view>
+        <view class="tip-item">2. 严重问题会优先处理</view>
+        <view class="tip-item">3. 管理员会在24小时内响应您的申报</view>
+        <view class="tip-item">4. 您可以在"申报历史"中查看处理进展</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签页2: 申报历史 -->
+  <view class="tab-content" wx:if="{{activeTab === 1}}">
+    <!-- 筛选条件 -->
+    <view class="filter-section">
+      <view class="filter-label">按状态筛选:</view>
+      <view class="filter-buttons">
+        <view 
+          wx:for="{{statusOptions}}"
+          wx:key="value"
+          class="filter-btn {{statusFilter === item.value ? 'active' : ''}}"
+          data-status="{{item.value}}"
+          bindtap="onStatusFilterChange">
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 维修申报列表 -->
+    <view class="maintenance-list">
+      <view 
+        wx:if="{{maintenanceList.length === 0 && !isLoading}}"
+        class="empty-state">
+        <text class="empty-icon">📭</text>
+        <text class="empty-text">暂无维修申报记录</text>
+      </view>
+
+      <view 
+        wx:for="{{maintenanceList}}"
+        wx:key="id"
+        class="maintenance-card"
+        data-id="{{item.id}}"
+        bindtap="onMaintenanceCardTap">
+        <!-- 卡片头部 -->
+        <view class="card-header">
+          <view class="seat-info">
+            <text class="seat-number">{{item.seat_number}}</text>
+            <text class="room-name">{{item.room_name}}</text>
+          </view>
+          <view class="status-badge" style="background-color: {{item.statusColor}}">
+            <text class="status-icon">{{item.statusIcon}}</text>
+            <text class="status-text">{{item.status_text}}</text>
+          </view>
+        </view>
+
+        <!-- 卡片内容 -->
+        <view class="card-body">
+          <view class="info-row">
+            <text class="label">问题类型:</text>
+            <text class="value">{{item.issue_type_text}}</text>
+          </view>
+          
+          <view class="info-row">
+            <text class="label">严重程度:</text>
+            <view class="severity-badge" style="background-color: {{item.severityColor}}">
+              <text class="value">{{item.severity_text}}</text>
+            </view>
+          </view>
+
+          <view class="info-row">
+            <text class="label">描述:</text>
+            <text class="value description">{{item.description}}</text>
+          </view>
+
+          <view class="info-row">
+            <text class="label">申报时间:</text>
+            <text class="value time">{{item.createdAt}}</text>
+          </view>
+
+          <view wx:if="{{item.assigned_to_name}}" class="info-row">
+            <text class="label">处理人:</text>
+            <text class="value">{{item.assigned_to_name}}</text>
+          </view>
+
+          <view wx:if="{{item.notes}}" class="info-row">
+            <text class="label">处理备注:</text>
+            <text class="value description">{{item.notes}}</text>
+          </view>
+
+          <view wx:if="{{item.completion_date}}" class="info-row">
+            <text class="label">完成时间:</text>
+            <text class="value time">{{item.completion_date}}</text>
+          </view>
+        </view>
+
+        <!-- 卡片底部 -->
+        <view class="card-footer">
+          <text class="detail-hint">点击卡片查看详情</text>
+        </view>
+      </view>
+
+      <!-- 加载更多提示 -->
+      <view wx:if="{{currentPage < totalPages && maintenanceList.length > 0}}" class="load-more">
+        <text>上拉加载更多</text>
+      </view>
+    </view>
+  </view>
+</view>

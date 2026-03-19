@@ -1,0 +1,116 @@
+<view class="container">
+  <view wx:if="{{hasUserInfo}}" class="content">
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+      <view class="user-header">
+        <view class="user-avatar">
+          <text class="avatar-text">{{userInfo.avatarChar}}</text>
+        </view>
+        <view class="user-info">
+          <view class="user-name">{{userInfo.real_name}}</view>
+          <view class="user-phone">{{userInfo.phone_number}}</view>
+          <view class="user-id">学号: {{userInfo.student_id}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能菜单 -->
+    <view class="menu-section">
+      <view class="menu-title">我的预约</view>
+      
+      <!-- 标签切换 -->
+      <view class="tab-bar">
+        <view class="tab-item {{activeTab === 0 ? 'active' : ''}}" data-index="0" bindtap="switchTab">
+          当前预约
+        </view>
+        <view class="tab-item {{activeTab === 1 ? 'active' : ''}}" data-index="1" bindtap="switchTab">
+          历史预约
+        </view>
+      </view>
+
+      <!-- 预约列表 -->
+      <view wx:if="{{reservations.length > 0}}" class="reservation-list">
+        <view wx:for="{{reservations}}" wx:key="id" class="reservation-card">
+          <view class="reservation-header">
+            <view class="seat-info">
+              <view class="seat-number">{{item.seat_number}}</view>
+              <view class="room-name">{{item.room_name}}</view>
+            </view>
+            <view class="status-badge" style="background-color: {{item.statusColor}}">
+              {{item.statusText}}
+            </view>
+          </view>
+
+          <view class="reservation-body">
+            <view class="info-row">
+              <view class="label">预约日期：</view>
+              <view class="value">{{item.reservation_date}}</view>
+            </view>
+            <view class="info-row">
+              <view class="label">预约时间：</view>
+              <view class="value">{{item.reservation_time}}</view>
+            </view>
+            <view class="info-row">
+              <view class="label">创建时间：</view>
+              <view class="value">{{item.created_at}}</view>
+            </view>
+          </view>
+
+          <!-- 操作按钮 -->
+          <view class="reservation-actions">
+            <button wx:if="{{item.status === 0}}" class="action-btn cancel-btn" data-id="{{item.id}}" bindtap="onCancelReservation">
+              取消预约
+            </button>
+            <button wx:if="{{item.status === 0}}" class="action-btn check-in-btn" data-id="{{item.id}}" bindtap="onCheckIn">
+              签到
+            </button>
+            <view wx:if="{{item.status !== 0}}" class="action-btn completed-btn">
+              {{item.statusText}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view wx:else class="empty-reservation">
+        <view class="empty-icon">📅</view>
+        <view class="empty-text" wx:if="{{activeTab === 0}}">暂无当前预约</view>
+        <view class="empty-text" wx:else>暂无历史预约</view>
+      </view>
+    </view>
+
+    <view class="menu-section">
+      <view class="menu-title">我的信息</view>
+      <view class="menu-item" bindtap="onGoToStatistics">
+        <view class="menu-label">📊 个人统计</view>
+        <view class="menu-arrow">›</view>
+      </view>
+      <view class="menu-item" bindtap="onGoToAccount">
+        <view class="menu-label">⚙️ 我的账户</view>
+        <view class="menu-arrow">›</view>
+      </view>
+      <view class="menu-item" bindtap="onGoToMaintenance">
+        <view class="menu-label">🔧 座位维修申请</view>
+        <view class="menu-arrow">›</view>
+      </view>
+      <view class="menu-item">
+        <view class="menu-label">信用积分</view>
+        <view class="menu-value">--</view>
+      </view>
+      <view class="menu-item">
+        <view class="menu-label">加入时间</view>
+        <view class="menu-value">{{userInfo.createdDate || '--'}}</view>
+      </view>
+    </view>
+
+    <!-- 登出按钮 -->
+    <button class="logout-btn" bindtap="onLogout">登出账户</button>
+  </view>
+
+  <view wx:else class="empty">
+    <view class="empty-text">请先登录</view>
+    <navigator url="/pages/login/login" open-type="redirect" class="login-btn">
+      返回登录
+    </navigator>
+  </view>
+</view>

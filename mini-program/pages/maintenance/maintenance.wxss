@@ -1,0 +1,554 @@
+/* 座位维修申请页面样式 */
+
+.maintenance-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 标签页 */
+.tabs {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tab-item {
+  flex: 1;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 3px solid transparent;
+  color: #666;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.tab-item.active {
+  color: #3c6fda;
+  border-bottom-color: #3c6fda;
+}
+
+.tab-icon {
+  font-size: 24px;
+}
+
+.tab-label {
+  font-size: 12px;
+}
+
+/* 标签页内容 */
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+/* 表单样式 */
+.section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.required {
+  color: #f44336;
+  margin-left: 2px;
+}
+
+/* 座位号输入 */
+.input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.seat-input,
+.input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.seat-input:focus,
+.input:focus {
+  border-color: #3c6fda;
+  outline: none;
+}
+
+.scan-btn {
+  width: 40px;
+  height: 40px;
+  background-color: #3c6fda;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+}
+
+.hint {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+}
+
+/* 问题类型网格 */
+.issue-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.issue-type-item {
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.issue-type-item:active {
+  transform: scale(0.98);
+}
+
+.issue-type-item.selected {
+  border-color: #3c6fda;
+  background-color: #f0f5ff;
+}
+
+.issue-icon {
+  font-size: 24px;
+}
+
+.issue-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.issue-type-item.selected .issue-label {
+  color: #3c6fda;
+  font-weight: 600;
+}
+
+/* 严重程度 */
+.severity-group {
+  display: flex;
+  gap: 10px;
+}
+
+.severity-item {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.severity-item:active {
+  transform: scale(0.98);
+}
+
+.severity-item.selected {
+  border-color: #3c6fda;
+  background-color: #f0f5ff;
+}
+
+.severity-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.severity-item.selected .severity-label {
+  color: #3c6fda;
+}
+
+/* 文本框 */
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  min-height: 100px;
+  resize: none;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+.textarea:focus {
+  border-color: #3c6fda;
+  outline: none;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* 提交按钮 */
+.submit-btn {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background-color: #3c6fda;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:active:not([disabled]) {
+  background-color: #2d5cb3;
+}
+
+.btn-primary[disabled] {
+  background-color: #ccc;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* 提示信息 */
+.tips {
+  background-color: #fff8e1;
+  border-left: 4px solid #fbc02d;
+  padding: 12px;
+  border-radius: 2px;
+  margin-top: 20px;
+}
+
+.tip-title {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.tip-item {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 筛选部分 */
+.filter-section {
+  background-color: #ffffff;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #666;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.filter-btn:active {
+  transform: scale(0.95);
+}
+
+.filter-btn.active {
+  border-color: #3c6fda;
+  background-color: #3c6fda;
+  color: white;
+}
+
+/* 维修列表 */
+.maintenance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.empty-text {
+  color: #999;
+  font-size: 14px;
+}
+
+/* 维修卡片 */
+.maintenance-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.maintenance-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 12px 15px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.seat-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seat-number {
+  font-weight: 700;
+  font-size: 16px;
+  color: #333;
+}
+
+.room-name {
+  font-size: 12px;
+  color: #999;
+  background-color: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-icon {
+  font-size: 14px;
+}
+
+.status-text {
+  font-size: 12px;
+}
+
+/* 卡片体 */
+.card-body {
+  padding: 12px 15px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-row .label {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin: 0;
+}
+
+.info-row .value {
+  flex: 1;
+  font-size: 12px;
+  color: #333;
+  text-align: right;
+}
+
+.info-row .value.description {
+  text-align: left;
+}
+
+.info-row .value.time {
+  color: #999;
+}
+
+.severity-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 卡片底部 */
+.card-footer {
+  padding: 8px 15px;
+  background-color: #fafafa;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.detail-hint {
+  font-size: 11px;
+  color: #999;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* 加载指示器 */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3c6fda;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+  .section {
+    padding: 15px;
+  }
+
+  .issue-type-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tab-icon {
+    font-size: 20px;
+  }
+
+  .seat-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

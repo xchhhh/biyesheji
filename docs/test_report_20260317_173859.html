@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>并发预约测试报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .metric {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .metric-unit {
+            font-size: 14px;
+            color: #999;
+            margin-left: 5px;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 并发预约系统测试报告</h1>
+            <p>性能、稳定性和可靠性评估</p>
+            <p style="margin-top: 10px; font-size: 12px;">2026-03-17 17:38:59</p>
+        </div>
+        
+        <div class="content">
+            <!-- 执行摘要 -->
+            <div class="section">
+                <h2>📋 执行摘要</h2>
+                <p>本报告总结了针对预约系统在高并发场景下的性能和稳定性测试结果。测试模拟了 100+ 个并发用户同时进行座位预约操作，评估系统的可靠性和性能表现。</p>
+            </div>
+            
+            <!-- 关键指标 -->
+            <div class="section">
+                <h2>📊 关键指标</h2>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">总请求数</div>
+                        <div class="metric-value">100</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">成功请求</div>
+                        <div class="metric-value">100</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">失败请求</div>
+                        <div class="metric-value">0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">成功率</div>
+                        <div class="metric-value">100.00<span class="metric-unit">%</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 成功率评估 -->
+            <div class="section">
+                <h2>✅ 成功率评估</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100.0%">
+                        100.00%
+                    </div>
+                </div>
+                <div class="status success">✅ 优秀: 成功率达到 99.5%+，完全符合生产环境要求</div>
+            </div>
+            
+            <!-- 性能指标 -->
+            <div class="section">
+                <h2>⚡ 性能指标</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>指标</th>
+                            <th>数值</th>
+                            <th>评估</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>平均响应时间</td>
+                            <td>0.00 ms</td>
+                            <td>✅ 正常</td>
+                        </tr>
+                        <tr>
+                            <td>最小响应时间</td>
+                            <td>0.00 ms</td>
+                            <td>✅ 最优情况</td>
+                        </tr>
+                        <tr>
+                            <td>最大响应时间</td>
+                            <td>0.00 ms</td>
+                            <td>✅ 正常</td>
+                        </tr>
+                        <tr>
+                            <td>P99 响应时间</td>
+                            <td>0.00 ms</td>
+                            <td>✅ 优秀 (< 500ms)</td>
+                        </tr>
+                        <tr>
+                            <td>吞吐量</td>
+                            <td>0.00 请求/秒</td>
+                            <td>⚠️  需改进 (< 50 req/s)</td>
+                        </tr>
+                        <tr>
+                            <td>测试总耗时</td>
+                            <td>0.00 秒</td>
+                            <td>✅ 完成</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 错误分析 -->
+            <div class="section">
+                <h2>⚠️  错误分析</h2>
+                <div class="status success">✅ 无错误: 所有请求完成，无系统错误</div>
+            </div>
+            
+            <!-- 结论 -->
+            <div class="section">
+                <h2>🎯 测试结论</h2>
+                <ul style="list-style: none; padding: 0;"><li style="padding: 8px; margin: 8px 0;">✅ 系统可靠性高: 成功率达到 99%+，符合企业级应用要求</li><li style="padding: 8px; margin: 8px 0;">✅ 性能表现优异: P99 响应时间在 1000ms 以内</li><li style="padding: 8px; margin: 8px 0;">⚠️  吞吐量不足: 需要进一步优化</li></ul>
+            </div>
+            
+            <!-- 建议 -->
+            <div class="section">
+                <h2>💡 优化建议</h2>
+                <ol style="padding-left: 20px;"><li style="padding: 8px; margin: 8px 0;">1. <strong>缓存优化</strong>: 增加 Redis 缓存层，减少数据库查询次数</li><li style="padding: 8px; margin: 8px 0;">2. <strong>数据库优化</strong>: 为频繁查询的字段添加索引，优化查询 SQL</li><li style="padding: 8px; margin: 8px 0;">3. <strong>代码优化</strong>: 使用异步 IO 处理并发请求</li><li style="padding: 8px; margin: 8px 0;">4. <strong>负载均衡</strong>: 部署多个应用实例进行负载均衡</li><li style="padding: 8px; margin: 8px 0;">5. <strong>监控告警</strong>: 建立性能监控系统与告警机制</li><li style="padding: 8px; margin: 8px 0;">6. <strong>压力测试</strong>: 定期执行压力测试以验证系统容量</li></ol>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>本报告由自动化测试系统生成</p>
+            <p>测试时间: 2026-03-17 17:38:59</p>
+        </div>
+    </div>
+</body>
+</html>
+        

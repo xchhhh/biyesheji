@@ -1,0 +1,24 @@
+{
+  "test_config": {
+    "num_users": 100,
+    "api_url": "http://localhost:5000",
+    "test_type": "simple_concurrent"
+  },
+  "results": {
+    "total_requests": 100,
+    "successful_requests": 0,
+    "failed_requests": 100,
+    "success_rate": "0.00%",
+    "errors": {
+      "HTTP_500": {
+        "count": 100,
+        "messages": [
+          "{\n  \"code\": 400,\n  \"data\": null,\n  \"message\": \"\\u7cfb\\u7edf\\u9519\\u8bef: ApiResponse.success() got a",
+          "{\n  \"code\": 400,\n  \"data\": null,\n  \"message\": \"\\u7cfb\\u7edf\\u9519\\u8bef: ApiResponse.success() got a",
+          "{\n  \"code\": 400,\n  \"data\": null,\n  \"message\": \"\\u7cfb\\u7edf\\u9519\\u8bef: ApiResponse.success() got a"
+        ]
+      }
+    }
+  },
+  "timestamp": "2026-03-17T17:36:13.543577"
+}

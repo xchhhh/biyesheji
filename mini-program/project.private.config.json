@@ -1,0 +1,22 @@
+{
+  "libVersion": "3.14.3",
+  "projectname": "mini-program",
+  "condition": {},
+  "setting": {
+    "urlCheck": false,
+    "lazyloadPlaceholderEnable": false,
+    "skylineRenderEnable": false,
+    "autoAudits": false,
+    "useApiHook": true,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "compileHotReLoad": true,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false,
+    "coverView": false,
+    "preloadBackgroundData": false,
+    "showShadowRootInWxmlPanel": false,
+    "showES6CompileOption": false
+  }
+}

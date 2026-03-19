@@ -1,0 +1,149 @@
+<view class="container">
+  <view wx:if="{{hasUserInfo}}" class="content">
+    <!-- 用户头部卡片 -->
+    <view class="profile-card">
+      <view class="profile-header">
+        <view class="avatar">
+          <text class="avatar-text">{{userInfo.avatarChar}}</text>
+        </view>
+        <view class="profile-info">
+          <view class="name">{{userInfo.real_name}}</view>
+          <view class="phone">{{userInfo.phone}}</view>
+          <view class="credit">信用积分: <text class="credit-score">{{userInfo.credit_score}}</text></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="section">
+      <view class="section-title">基本信息</view>
+      <view class="info-list">
+        <view class="info-item">
+          <view class="label">昵称</view>
+          <view class="value">{{userInfo.nickname || '未设置'}}</view>
+        </view>
+        <view class="info-item">
+          <view class="label">学号</view>
+          <view class="value">{{userInfo.student_id || '--'}}</view>
+        </view>
+        <view class="info-item">
+          <view class="label">加入时间</view>
+          <view class="value">{{userInfo.created_at || '--'}}</view>
+        </view>
+        <view class="info-item">
+          <view class="label">账户状态</view>
+          <view class="value {{userInfo.status === 1 ? 'status-active' : 'status-inactive'}}">
+            {{userInfo.status === 1 ? '正常' : '禁用'}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 账户管理 -->
+    <view class="section">
+      <view class="section-title">账户管理</view>
+      <button class="action-button" bindtap="onChangePassword">修改密码</button>
+      <button class="action-button secondary-btn" bindtap="onCheckStatistics">查看统计</button>
+    </view>
+
+    <!-- 修改密码弹窗 -->
+    <view wx:if="{{showPasswordModal}}" class="modal-overlay" bindtap="closePasswordModal">
+      <view class="modal" catchtap>
+        <view class="modal-header">修改密码</view>
+        
+        <view class="form-group">
+          <label class="label">旧密码</label>
+          <input 
+            class="input" 
+            type="password" 
+            placeholder="请输入旧密码"
+            bindinput="onPasswordInput"
+            data-field="oldPassword"
+          />
+        </view>
+
+        <view class="form-group">
+          <label class="label">新密码</label>
+          <input 
+            class="input" 
+            type="password" 
+            placeholder="请输入新密码"
+            bindinput="onPasswordInput"
+            data-field="newPassword"
+          />
+        </view>
+
+        <view class="form-group">
+          <label class="label">确认新密码</label>
+          <input 
+            class="input" 
+            type="password" 
+            placeholder="请再次输入新密码"
+            bindinput="onPasswordInput"
+            data-field="confirmPassword"
+          />
+        </view>
+
+        <view class="modal-actions">
+          <button class="modal-btn cancel-btn" bindtap="closePasswordModal">取消</button>
+          <button class="modal-btn confirm-btn {{isChangingPassword ? 'disabled' : ''}}" 
+            bindtap="submitPasswordChange"
+            disabled="{{isChangingPassword}}"
+          >
+            {{isChangingPassword ? '提交中...' : '确认修改'}}
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="section danger-section">
+      <view class="section-title">危险操作</view>
+      <button class="action-button danger-btn" bindtap="onDeactivate">注销账户</button>
+      <view class="warning-text">注销后将无法恢复，所有未开始的预约将被取消</view>
+    </view>
+
+    <!-- 注销确认弹窗 -->
+    <view wx:if="{{showDeactivateModal}}" class="modal-overlay" bindtap="closeDeactivateModal">
+      <view class="modal" catchtap>
+        <view class="modal-header warning">注销确认</view>
+        
+        <view class="warning-content">
+          <view class="warning-icon">⚠️</view>
+          <view class="warning-message">
+            注销账户是不可逆的操作。注销后：
+            <view>• 账户将被永久禁用</view>
+            <view>• 所有未开始的预约将被取消</view>
+            <view>• 无法登录该账户</view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <label class="label">确认密码</label>
+          <input 
+            class="input" 
+            type="password" 
+            placeholder="请输入密码以确认注销"
+            bindinput="onDeactivatePasswordInput"
+          />
+        </view>
+
+        <view class="modal-actions">
+          <button class="modal-btn cancel-btn" bindtap="closeDeactivateModal">取消</button>
+          <button class="modal-btn danger-btn-modal {{isDeactivating ? 'disabled' : ''}}" 
+            bindtap="confirmDeactivate"
+            disabled="{{isDeactivating}}"
+          >
+            {{isDeactivating ? '处理中...' : '确认注销'}}
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty">
+    <view class="empty-icon">🔑</view>
+    <view class="empty-text">请先登录</view>
+    <navigator url="/pages/login/login" open-type="redirect" class="login-link">前往登录</navigator>
+  </view>
+</view>

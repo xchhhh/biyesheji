@@ -1,0 +1,15 @@
+{
+  "test_config": {
+    "num_users": 100,
+    "api_url": "http://localhost:5000",
+    "test_type": "simple_concurrent"
+  },
+  "results": {
+    "total_requests": 100,
+    "successful_requests": 100,
+    "failed_requests": 0,
+    "success_rate": "100.00%",
+    "errors": {}
+  },
+  "timestamp": "2026-03-17T17:37:47.123816"
+}

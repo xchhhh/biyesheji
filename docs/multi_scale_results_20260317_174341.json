@@ -1,0 +1,50 @@
+{
+  "test_config": {
+    "api_url": "http://localhost:5000",
+    "test_scales": [
+      50,
+      100
+    ],
+    "timestamp": "2026-03-17T17:43:41.453715"
+  },
+  "results": {
+    "50": {
+      "num_users": 50,
+      "total_requests": 50,
+      "successful_requests": 0,
+      "failed_requests": 50,
+      "success_rate": "0.00%",
+      "total_time": "6.39s",
+      "throughput": "7.82 req/s",
+      "response_times": {
+        "avg_ms": "6282.30",
+        "min_ms": "6220.34",
+        "max_ms": "6363.27",
+        "p95_ms": "6338.39",
+        "p99_ms": "6363.27"
+      },
+      "errors": {
+        "404": 50
+      }
+    },
+    "100": {
+      "num_users": 100,
+      "total_requests": 100,
+      "successful_requests": 0,
+      "failed_requests": 100,
+      "success_rate": "0.00%",
+      "total_time": "6.74s",
+      "throughput": "14.83 req/s",
+      "response_times": {
+        "avg_ms": "6459.33",
+        "min_ms": "6221.83",
+        "max_ms": "6638.43",
+        "p95_ms": "6629.00",
+        "p99_ms": "6638.43"
+      },
+      "errors": {
+        "404": 100
+      }
+    }
+  }
+}

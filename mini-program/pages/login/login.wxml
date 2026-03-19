@@ -1,0 +1,68 @@
+<view class="login-container">
+  <!-- 背景装饰 -->
+  <view class="login-bg"></view>
+
+  <!-- 登录内容 -->
+  <view class="login-content">
+    <!-- Logo区域 -->
+    <view class="login-logo-section">
+      <view class="logo-icon">🏫</view>
+      <text class="logo-title">图书馆座位预约</text>
+      <text class="logo-subtitle">学习空间智能管理系统</text>
+    </view>
+
+    <!-- 登录表单 -->
+    <view class="login-form">
+      <!-- 账号输入 -->
+      <view class="form-group">
+        <view class="input-wrapper">
+          <text class="input-icon">📧</text>
+          <input
+            class="input-field"
+            type="text"
+            placeholder="请输入手机号码"
+            value="{{phoneNumber}}"
+            bindinput="onPhoneInput"
+            placeholder-class="placeholder"
+          />
+        </view>
+      </view>
+
+      <!-- 密码输入 -->
+      <view class="form-group">
+        <view class="input-wrapper">
+          <text class="input-icon">🔒</text>
+          <input
+            class="input-field"
+            type="password"
+            placeholder="请输入密码"
+            value="{{password}}"
+            bindinput="onPasswordInput"
+            placeholder-class="placeholder"
+          />
+        </view>
+      </view>
+
+      <!-- 立即登录按钮 -->
+      <button class="btn btn-primary btn-lg" bindtap="onLogin">
+        <text class="btn-text">{{isLoading ? '登录中...' : '立即登录'}}</text>
+      </button>
+
+      <!-- 底部链接 -->
+      <view class="login-footer">
+        <text class="footer-link" bindtap="onGoToRegister">
+          没有账户？<text class="link-highlight">立即注册</text>
+        </text>
+        <text class="footer-link" bindtap="onForgotPassword">
+          <text class="link-highlight">忘记密码？</text>
+        </text>
+      </view>
+    </view>
+
+    <!-- 错误提示 -->
+    <view class="error-message" wx:if="{{errorMessage}}">
+      <text class="error-icon">⚠️</text>
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+  </view>
+</view>

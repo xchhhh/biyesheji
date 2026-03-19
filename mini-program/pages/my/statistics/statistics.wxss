@@ -1,0 +1,272 @@
+.container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.content {
+  padding: 15px;
+}
+
+/* 统计卡片 */
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.main-stat {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.main-row {
+  gap: 0;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+  padding: 10px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* 信用分卡片 */
+.credit-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.credit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.credit-label {
+  font-size: 14px;
+  color: #999;
+}
+
+.credit-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.credit-high {
+  color: #4caf50;
+}
+
+.credit-medium {
+  color: #ff9800;
+}
+
+.credit-low {
+  color: #f44336;
+}
+
+.credit-bar {
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.credit-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.credit-info {
+  text-align: right;
+  font-size: 12px;
+}
+
+.credit-status {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.credit-status.warning {
+  color: #f44336;
+}
+
+/* 区块 */
+.section {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #f9f9f9;
+}
+
+/* 统计网格 */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  padding: 15px;
+  background-color: #f5f5f5;
+}
+
+.grid-item {
+  background: white;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.grid-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.grid-label {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 汇总列表 */
+.summary-list {
+  padding: 0;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-label {
+  color: #666;
+  font-size: 14px;
+  flex: 1;
+}
+
+.summary-value {
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.summary-value.warning {
+  color: #f44336;
+}
+
+/* 习惯列表 */
+.habit-list {
+  padding: 0;
+}
+
+.habit-item {
+  padding: 15px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.habit-item:last-child {
+  border-bottom: none;
+}
+
+.habit-label {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.habit-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.habit-count {
+  font-size: 12px;
+  color: #667eea;
+}
+
+/* 操作按钮 */
+.bottom-section {
+  margin-bottom: 50px;
+}
+
+.reset-btn {
+  width: calc(100% - 30px);
+  margin: 15px;
+  padding: 12px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+button.reset-btn:after {
+  border: none;
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #999;
+}

@@ -1,0 +1,54 @@
+{
+  "description": "座位预约小程序",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": false,
+    "minified": true,
+    "newFeature": false,
+    "nodeModules": false,
+    "autoAudits": false,
+    "checkInvalidEsmSyntax": true,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "enhanced": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.28.0",
+  "appid": "wx3044d9abf28fadbc",
+  "projectname": "seat-reservation-mini-program",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "id": -1,
+          "name": "login",
+          "pathName": "pages/login/login"
+        }
+      ]
+    }
+  },
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
+}

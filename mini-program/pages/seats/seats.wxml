@@ -1,0 +1,383 @@
+<!--座位选择页面 WXML-->
+<view class="seats-container">
+  <!-- 加载指示器 -->
+  <view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="spinner"></view>
+    <text class="loading-text">加载座位信息中...</text>
+  </view>
+
+  <!-- 座位热力表 - 简约设计 -->
+  
+  <!-- 顶部统计与环境卡片 (新增功能) -->
+  <view class="dashboard-header" wx:if="{{!isLoading}}">
+    
+    <view class="dashboard-title">
+      <text class="title-text">📊 实时自习室状态</text>
+      <text class="title-date">{{today}}</text>
+    </view>
+
+    <view class="stats-cards">
+      <view class="stat-box">
+        <text class="stat-title">总座位数</text>
+        <view class="stat-value">{{totalSeats}}</view>
+      </view>
+      <view class="stat-box">
+        <text class="stat-title">已被占座</text>
+        <view class="stat-value occupied">{{occupiedCount}}</view>
+      </view>
+      <view class="stat-box primary-stat">
+        <text class="stat-title">当前空闲</text>
+        <view class="stat-value available">{{availableCount}}</view>
+      </view>
+    </view>
+    
+    <view class="env-info">
+      <view class="env-item"><text class="env-icon">🌡️</text>24℃ 恒温</view>
+      <view class="env-item"><text class="env-icon">📶</text>Wi-Fi 极速</view>
+      <view class="env-item"><text class="env-icon">🤫</text>沉浸静音区</view>
+      <view class="env-item"><text class="env-icon">🔋</text>有插座</view>
+    </view>
+
+  </view>
+
+  
+  
+  <!-- 快捷功能入口 -->
+  <view class="quick-actions" wx:if="{{!isLoading}}">
+    <view class="action-btn-item" bindtap="onOpenSeatSelection">
+      <view class="action-icon seat-icon">🗺️</view>
+      <text>自选座位</text>
+    </view>
+    <view class="action-btn-item" bindtap="onOpenHeatmapModal">
+      <view class="action-icon hot-icon">🔥</view>
+      <text>热度排行</text>
+    </view>
+    <view class="action-btn-item" bindtap="onMyReservations">
+      <view class="action-icon book-icon">📅</view>
+      <text>我的预约</text>
+    </view>
+    <view class="action-btn-item" bindtap="onGetRecommendations">
+      <view class="action-icon spark-icon">⚡</view>
+      <text>智能推荐</text>
+    </view>
+    <view class="action-btn-item" bindtap="onScanSeat">
+      <view class="action-icon scan-icon">📷</view>
+      <text>扫码落座</text>
+    </view>
+    <view class="action-btn-item" bindtap="onShowRules">
+      <view class="action-icon rule-icon">📜</view>
+      <text>使用守则</text>
+    </view>
+  </view>
+
+
+  <!-- 自选座位模态框 -->
+  <view class="modal-overlay {{showSeatSelectionModal ? 'show' : ''}}" style="z-index: 1005;" bindtap="onCloseSeatSelection"></view>
+  <view class="modal full-modal {{showSeatSelectionModal ? 'show' : ''}}" style="z-index: 1006;">
+    <view class="modal-header">
+      <text>🗺️ 自选座位</text>
+      <view class="modal-close" bindtap="onCloseSeatSelection">✕</view>
+    </view>
+    <view class="modal-content scroll-content">
+      
+  <!-- 楼层切换 -->
+  <view class="floor-selector-opt">
+      <view class="floor-tabs">
+        <view wx:for="{{roomList}}" wx:key="id" class="floor-tab {{selectedRoomIndex === index ? 'active' : ''}}" bindtap="onSelectRoom" data-index="{{index}}">
+          {{item.name}}
+        </view>
+      </view>
+  </view>
+
+      
+  <view class="all-seats-opt" wx:if="{{showAllSeats}}">
+      <view class="seat-header-opt">
+        <view class="screen-curve">自 习 区 域</view>
+        <view class="seat-refresh-btn" bindtap="onRefreshSeats">
+          <text class="refresh-icon">🔄</text>
+        </view>
+      </view>
+      
+      <view class="seat-legend-opt">
+        <view class="legend-item"><view class="leg-box free"></view>可选</view>
+        <view class="legend-item"><view class="leg-box busy"></view>已占</view>
+        <view class="legend-item"><view class="leg-box selected"></view>选中</view>
+      </view>
+
+      <scroll-view scroll-x="true" class="seat-map-scroll">
+        <view class="seat-map-container">
+          <!-- Row Labels -->
+          <view class="row-labels">
+            <view wx:for="{{rowLetters}}" wx:key="*this" class="row-label">{{item}}</view>
+          </view>
+          
+          <!-- Seat Grid -->
+          <view class="seat-grid">
+            <view wx:for="{{rows}}" wx:for-item="row" wx:for-index="rowIndex" wx:key="rowIndex" class="seat-row">
+              <view wx:for="{{row}}" wx:for-item="seat" wx:key="seatId" class="seat-box {{seat.status === 0 ? 'free' : 'busy'}} {{selectedSeat && selectedSeat.seatId === seat.seatId ? 'selected' : ''}}" bindtap="onSelectSeat" data-seat-id="{{seat.seatId}}" data-disabled="{{seat.status !== 0}}">
+                <text class="seat-txt">{{seat.seatNumber}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+      
+  <view class="empty-state" wx:if="{{rows.length === 0}}">
+    <view class="empty-icon">📋</view>
+    <text>暂无座位信息</text>
+    <text class="empty-hint">请稍后重试</text>
+  </view>
+
+    </view>
+  </view>
+
+  <!-- 热度排行模态框 -->
+  <view class="modal-overlay {{showHeatmapModal ? 'show' : ''}}" style="z-index: 1005;" bindtap="onCloseHeatmapModal"></view>
+  <view class="modal {{showHeatmapModal ? 'show' : ''}}" style="z-index: 1006;">
+    <view class="modal-header">
+      <text>🔥 热度排行</text>
+      <view class="modal-close" bindtap="onCloseHeatmapModal">✕</view>
+    </view>
+    <view class="modal-content scroll-content">
+      
+    <view class="heatmap-section-optimized">
+    <view class="heatmap-category-opt hot-category">
+      <view class="category-title-opt">
+        <view class="title-icon hot-icon">🔥</view>
+        <text>最受青睐 Top 3</text>
+      </view>
+      <view class="heatmap-list-opt">
+        <view wx:for="{{topHotSeats}}" wx:key="seatId" class="heatmap-card {{item.status === 0 ? 'available' : 'unavailable'}}" bindtap="onSelectHeatmapSeat" data-seat-id="{{item.seatId}}">
+          <view class="card-left">
+            <text class="rank-num">NO.{{index + 1}}</text>
+            <text class="seat-no">{{item.seatNumber}}</text>
+          </view>
+          <view class="card-right">
+            <view class="heat-track">
+              <view class="heat-fill hot-fill" style="width: {{item.percentHeat}}%"></view>
+            </view>
+            <text class="heat-text">{{item.percentHeat}}°C</text>
+          </view>
+          <view class="status-indicator {{item.status === 0 ? 'free' : 'busy'}}"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="heatmap-category-opt cold-category">
+      <view class="category-title-opt">
+        <view class="title-icon cold-icon">❄️</view>
+        <text>捡漏专区 Top 3</text>
+      </view>
+      <view class="heatmap-list-opt">
+        <view wx:for="{{topColdSeats}}" wx:key="seatId" class="heatmap-card {{item.status === 0 ? 'available' : 'unavailable'}}" bindtap="onSelectHeatmapSeat" data-seat-id="{{item.seatId}}">
+          <view class="card-left">
+            <text class="rank-num cold-num">NO.{{index + 1}}</text>
+            <text class="seat-no">{{item.seatNumber}}</text>
+          </view>
+          <view class="card-right">
+            <view class="heat-track">
+              <view class="heat-fill cold-fill" style="width: {{item.percentHeat}}%"></view>
+            </view>
+            <text class="heat-text cold-text">{{item.percentHeat}}°C</text>
+          </view>
+          <view class="status-indicator {{item.status === 0 ? 'free' : 'busy'}}"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="heatmap-legend-opt">
+      <text class="legend-title">热度指示</text>
+      <view class="legend-bar-wrap">
+        <view class="legend-gradient"></view>
+        <view class="legend-scale">
+          <text>空闲捡漏</text>
+          <text>抢手</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+    </view>
+  </view>
+
+<!-- 座位推荐模态框 -->
+  <view class="modal-overlay {{showRecommendModal ? 'show' : ''}}" style="z-index: 1008;" bindtap="onCloseRecommendModal"></view>
+  
+  <view class="modal {{showRecommendModal ? 'show' : ''}}" style="z-index: 1009;">
+    <view class="modal-header">
+      <text>🎯 推荐座位</text>
+      <view class="modal-close" bindtap="onCloseRecommendModal">✕</view>
+    </view>
+
+    <view class="modal-content scroll-content" style="background-color: #f4f7f6;">
+      <view wx:if="{{isLoadingRecommendations}}" class="loading-state">
+        <view class="spinner"></view>
+        <text>正在推荐座位...</text>
+      </view>
+
+      <view wx:elif="{{recommendations && recommendations.length > 0}}" class="recommendations-list">
+        <view class="recommend-intro">
+          {{recommendationReason}}
+        </view>
+        
+        <view wx:for="{{recommendations}}" wx:key="seat_id" class="recommend-item" bindtap="onSelectRecommendedSeat" data-seat-id="{{item.seat_id}}" data-room-id="{{item.room_id}}">
+          <view class="recommend-header">
+            <view class="seat-badge">{{item.seat_number}}</view>
+            <view class="room-label">{{item.room_name}}</view>
+            <view class="score-badge">⭐ {{item.recommendation_score}}</view>
+          </view>
+          
+          <view class="recommend-stats">
+            <view class="stat">
+              <text class="stat-label">拥挤度</text>
+              <view class="stat-bar">
+                <view class="stat-bar-fill" style="width: {{item.crowding_level * 100}}%; background-color: {{item.crowding_level > 0.5 ? '#f44336' : item.crowding_level > 0.3 ? '#ff9800' : '#4caf50'}};"></view>
+              </view>
+              <text class="stat-value">{{item.crowdingPercent}}%</text>
+            </view>
+          </view>
+
+          <view class="recommend-reason">
+            <text class="reason-icon">💡</text>
+            <text class="reason-text">{{item.reason}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else="{{true}}" class="no-recommendations">
+        <view class="empty-icon">😕</view>
+        <view class="empty-text">暂无推荐座位</view>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="onCloseRecommendModal">关闭</button>
+    </view>
+  </view>
+
+  <!-- 预约确认模态框 -->
+  <view class="modal-overlay {{showModal ? 'show' : ''}}" style="z-index: 1008;" bindtap="onCancelModal"></view>
+  
+  <view class="modal {{showModal ? 'show' : ''}}" style="z-index: 1009;">
+    <view class="modal-header">
+      <text>确认预约</text>
+      <view class="modal-close" bindtap="onCancelModal">✕</view>
+    </view>
+
+    <view class="modal-content" wx:if="{{selectedSeat}}">
+      <view class="seat-info">
+        <view class="info-row">
+          <text class="label">座位号:</text>
+          <text class="value">{{selectedSeat.seatNumber}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">阅览室:</text>
+          <text class="value">{{roomList[selectedRoomIndex].name}}</text>
+        </view>
+      </view>
+
+      <!-- 日期和时间选择 -->
+      <view class="picker-group">
+        <view class="picker-item">
+          <text class="picker-label">预约日期:</text>
+          <picker 
+            mode="date" 
+            value="{{reservedDate}}"
+            start="{{today}}"
+            end="{{maxDate}}"
+            bindchange="onSelectDate">
+            <view class="picker-value">{{reservedDate}}</view>
+          </picker>
+        </view>
+
+        <view class="picker-item">
+          <text class="picker-label">时间段:</text>
+          <picker 
+            mode="selector"
+            range="{{timeSlots}}"
+            value="{{selectedTimeSlot}}"
+            bindchange="onSelectTimeSlot">
+            <view class="picker-value">{{timeSlots[selectedTimeSlot] || '请选择'}}</view>
+          </picker>
+        </view>
+
+        <!-- 时间槽显示列表 (可选增强) -->
+        <view class="time-slots-display">
+          <view class="time-slot-title">可选时间段：</view>
+          <view class="time-slots-list">
+            <view wx:for="{{timeSlots}}" wx:key="index" class="time-slot-item {{selectedTimeSlot === index ? 'selected' : ''}}" bindtap="onSelectTimeSlot" data-index="{{index}}">
+              {{item}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 预约说明 -->
+      <view class="notes">
+        <view class="note-item">• 预约后请在规定时间内签到，逾期不候</view>
+        <view class="note-item">• 迟到30分钟以上将被记作失约</view>
+        <view class="note-item">• 失约将扣除信用积分，影响后续预约</view>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-secondary" bindtap="onCancelModal">取消</button>
+      <button class="btn-primary" bindtap="onConfirmReservation" disabled="{{isSubmitting}}">
+        {{isSubmitting ? '提交中...' : '确认预约'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 加载中指示器 -->
+  <view class="loading-overlay {{isLoading ? 'show' : ''}}">
+    <view class="spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+
+  <!-- 使用守则模态框 -->
+  <view class="modal-overlay {{showRulesModal ? 'show' : ''}}" style="z-index: 1005;" bindtap="onCloseRulesModal"></view>
+  <view class="modal {{showRulesModal ? 'show' : ''}}" style="z-index: 1006;">
+    <view class="modal-header">
+      <text>📝 阅览室使用守则</text>
+      <view class="modal-close" bindtap="onCloseRulesModal">✕</view>
+    </view>
+    <view class="modal-content scroll-content" style="background-color: #f8fafc; padding: 30rpx 0;">
+      <view class="rule-card">
+        <view class="rule-item">
+          <view class="rule-icon-box quiet-icon">🤫</view>
+          <view class="rule-text-box">
+            <text class="rule-title">保持安静</text>
+            <text class="rule-desc">请勿在室内大声喧哗、接听电话，手机请调至静音或震动模式。</text>
+          </view>
+        </view>
+        <view class="rule-item">
+          <view class="rule-icon-box bag-icon">🎒</view>
+          <view class="rule-text-box">
+            <text class="rule-title">离开带走随身物品</text>
+            <text class="rule-desc">请勿用私人物品占座，离开座位请随身带走贵重物品，以防丢失。</text>
+          </view>
+        </view>
+        <view class="rule-item">
+          <view class="rule-icon-box clock-icon">⏰</view>
+          <view class="rule-text-box">
+            <text class="rule-title">按时抵达与签到</text>
+            <text class="rule-desc">预约成功后请在规定时间内到达并进行扫码落座，超时将自动取消预约。</text>
+          </view>
+        </view>
+        <view class="rule-item">
+          <view class="rule-icon-box clean-icon">🗑️</view>
+          <view class="rule-text-box">
+            <text class="rule-title">保持环境整洁</text>
+            <text class="rule-desc">请勿将食物和有色饮料带入阅览室，离开时请将个人物品及垃圾带走。</text>
+          </view>
+        </view>
+      </view>
+      <view style="padding: 0 40rpx; margin-top: 40rpx;">
+        <button class="rule-btn" bindtap="onCloseRulesModal">我已了解并同意</button>
+      </view>
+    </view>
+  </view>
